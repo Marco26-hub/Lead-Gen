@@ -1,0 +1,282 @@
+/* Atmospheric, editorial demo template — depth, grain, motion. Theme via CSS vars. */
+
+.root {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, color-mix(in srgb, var(--primary) 26%, transparent), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--fb);
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+  overflow: clip;
+}
+
+/* film grain overlay */
+.root::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- motion ---- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+
+.reveal {
+  opacity: 0;
+  animation: fadeUp 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.floaty { animation: floaty 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; animation: none; }
+  .floaty { animation: none; }
+}
+
+/* ---- type ---- */
+.display { font-family: var(--fh); line-height: 0.98; letter-spacing: -0.02em; text-wrap: balance; overflow-wrap: break-word; }
+
+.gradientText {
+  background: linear-gradient(115deg, var(--text) 22%, var(--accent) 60%, var(--primary));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 8s linear infinite alternate;
+}
+
+.eyebrow {
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ---- buttons ---- */
+.btnPrimary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(120deg, var(--primary), color-mix(in srgb, var(--accent) 75%, var(--primary)));
+  color: color-mix(in srgb, var(--bg) 88%, #000);
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.95rem 1.7rem;
+  box-shadow: 0 12px 40px -12px color-mix(in srgb, var(--primary) 70%, transparent);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.3s;
+}
+.btnPrimary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 60px -14px color-mix(in srgb, var(--primary) 75%, transparent);
+}
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--text) 24%, transparent);
+  color: var(--text);
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.95rem 1.6rem;
+  transition: border-color 0.3s, background 0.3s;
+}
+.btnGhost:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+/* ---- surfaces ---- */
+.glass {
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+}
+.card {
+  position: relative;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  border-radius: 1.25rem;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.4s, box-shadow 0.4s;
+}
+.card:hover {
+  transform: translateY(-8px);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--primary) 60%, transparent);
+}
+.num {
+  font-family: var(--fh);
+  font-size: 2.6rem;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.2px color-mix(in srgb, var(--accent) 75%, transparent);
+}
+
+.quoteMark {
+  font-family: var(--fh);
+  font-size: 5rem;
+  line-height: 0.6;
+  color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.dropcap::first-letter {
+  font-family: var(--fh);
+  float: left;
+  font-size: 4.6rem;
+  line-height: 0.7;
+  padding: 0.3rem 0.7rem 0 0;
+  color: var(--accent);
+}
+
+.monogram {
+  font-family: var(--fh);
+  font-weight: 800;
+  font-size: clamp(5rem, 16vw, 11rem);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--text) 30%, transparent);
+  letter-spacing: -0.04em;
+}
+
+.contactPanel {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--accent) 70%, var(--primary)));
+  color: color-mix(in srgb, var(--bg) 90%, #000);
+}
+.contactPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image: radial-gradient(circle at 20% 20%, #fff 0, transparent 8%),
+    radial-gradient(circle at 70% 60%, #fff 0, transparent 7%);
+  background-size: 44px 44px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  background: color-mix(in srgb, #fff 16%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 22%, transparent);
+}
+
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--text) 22%, transparent), transparent);
+}
+
+/* ---- booking / contact form ---- */
+.formCtl {
+  width: 100%;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+  color: var(--text);
+  border-radius: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  font-size: 16px; /* >=16px stops iOS Safari from auto-zooming on focus */
+  transition: border-color 0.2s;
+}
+.formCtl::placeholder { color: color-mix(in srgb, var(--text) 45%, transparent); }
+.formCtl:focus { outline: none; border-color: var(--accent); }
+
+.dayBtn {
+  aspect-ratio: 1;
+  border-radius: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text);
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.dayBtn:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.dayBtn:disabled { opacity: 0.26; cursor: not-allowed; }
+.daySel {
+  background: var(--primary);
+  color: color-mix(in srgb, var(--bg) 88%, #000);
+  font-weight: 700;
+}
+.daySel:hover { background: var(--primary); }
+
+.slotBtn {
+  border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+  border-radius: 9999px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text);
+  transition: all 0.2s;
+}
+.slotBtn:hover { border-color: var(--accent); }
+.slotSel {
+  background: var(--accent);
+  color: color-mix(in srgb, var(--bg) 88%, #000);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.stepBtn {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+  color: var(--text);
+  font-size: 1.2rem;
+  line-height: 1;
+  transition: border-color 0.2s, background 0.2s;
+}
+.stepBtn:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+
+.submitBtn {
+  width: 100%;
+  background: linear-gradient(120deg, var(--primary), color-mix(in srgb, var(--accent) 75%, var(--primary)));
+  color: color-mix(in srgb, var(--bg) 88%, #000);
+  font-weight: 700;
+  border-radius: 0.9rem;
+  padding: 0.95rem 1.2rem;
+  box-shadow: 0 12px 40px -14px color-mix(in srgb, var(--primary) 70%, transparent);
+  transition: transform 0.25s, box-shadow 0.25s, opacity 0.2s;
+}
+.submitBtn:hover:not(:disabled) { transform: translateY(-2px); }
+.submitBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Mobile touch sizing — booking form is embedded in every template */
+@media (max-width: 768px) {
+  .slotBtn { min-height: 44px; }
+  .stepBtn { width: 44px; height: 44px; }
+  .submitBtn { min-height: 48px; }
+  .dayBtn { min-height: 40px; }
+}

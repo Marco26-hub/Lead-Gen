@@ -1,0 +1,265 @@
+/* RistoranteClassic — warm, candle-lit "osteria editoriale".
+   Theme via CSS vars (restaurant preset: deep brown, terracotta, gold, Playfair). */
+
+.root {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(1100px 560px at 78% -8%, color-mix(in srgb, var(--primary) 24%, transparent), transparent 58%),
+    radial-gradient(820px 520px at -12% 28%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--fb);
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
+}
+
+/* warm film grain for atmosphere */
+.root::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.content { position: relative; z-index: 1; }
+
+/* ---- motion ---- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes slowZoom {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+.reveal { opacity: 0; animation: fadeUp 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; animation: none; }
+  .heroMedia { animation: none !important; }
+}
+
+/* ---- type ---- */
+.display { font-family: var(--fh); line-height: 1.02; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: break-word; }
+.eyebrow {
+  font-family: var(--fb);
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--accent);
+}
+
+/* ---- nav ---- */
+.nav {
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+/* ---- hero ---- */
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: slowZoom 14s ease-out forwards;
+}
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--bg) 4%, color-mix(in srgb, var(--bg) 55%, transparent) 38%, transparent 72%),
+    linear-gradient(to right, color-mix(in srgb, var(--bg) 70%, transparent), transparent 55%);
+}
+.heroNoPhoto {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(900px 600px at 75% 10%, color-mix(in srgb, var(--primary) 38%, transparent), transparent 60%),
+    radial-gradient(700px 500px at 10% 80%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 55%);
+}
+
+/* ---- buttons ---- */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: linear-gradient(118deg, var(--primary), color-mix(in srgb, var(--accent) 80%, var(--primary)));
+  color: #2a1708;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.9rem 1.7rem;
+  box-shadow: 0 14px 44px -14px color-mix(in srgb, var(--primary) 75%, transparent);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.3s;
+}
+.btnPrimary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 64px -16px color-mix(in srgb, var(--primary) 80%, transparent);
+}
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  color: var(--text);
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.9rem 1.6rem;
+  transition: border-color 0.3s, background 0.3s;
+}
+.btnGhost:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+
+.ratingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* ---- section furniture ---- */
+.goldRule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+.sectionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.sectionLabel::before {
+  content: "";
+  width: 2.2rem;
+  height: 2px;
+  background: var(--accent);
+  display: inline-block;
+}
+
+/* ---- highlights ---- */
+.highlight {
+  border: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  transition: border-color 0.35s, transform 0.35s;
+}
+.highlight:hover { border-color: color-mix(in srgb, var(--accent) 48%, transparent); transform: translateY(-5px); }
+.highlightNum {
+  font-family: var(--fh);
+  font-size: 1.6rem;
+  color: var(--accent);
+}
+
+/* ---- menu "La Carta" ---- */
+.menuCard {
+  background:
+    linear-gradient(color-mix(in srgb, var(--surface) 80%, transparent), color-mix(in srgb, var(--surface) 80%, transparent)),
+    var(--bg);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: 1.4rem;
+}
+.menuSectionTitle {
+  font-family: var(--fh);
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.menuItem { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 0.4rem; }
+.leader {
+  align-self: end;
+  margin-bottom: 0.32rem;
+  border-bottom: 1.5px dotted color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.price { font-family: var(--fh); font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+/* ---- gallery ---- */
+.gallery {
+  columns: 2;
+  column-gap: 0.85rem;
+}
+@media (min-width: 768px) { .gallery { columns: 3; } }
+.galleryItem {
+  position: relative;
+  margin-bottom: 0.85rem;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  break-inside: avoid;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.galleryItem img {
+  width: 100%;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.galleryItem:hover img { transform: scale(1.06); }
+
+/* ---- info / contact panel ---- */
+.infoPanel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.4rem;
+  background: linear-gradient(140deg, var(--primary), color-mix(in srgb, var(--accent) 64%, var(--primary)));
+  color: #2a1708;
+}
+.infoPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  background-image:
+    radial-gradient(circle at 18% 22%, #fff 0, transparent 7%),
+    radial-gradient(circle at 72% 64%, #fff 0, transparent 6%);
+  background-size: 46px 46px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  background: color-mix(in srgb, #fff 18%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 26%, transparent);
+}
+
+/* ---- map ---- */
+.mapFrame {
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid rgba(42, 23, 8, 0.22);
+  box-shadow: 0 16px 44px -24px rgba(0, 0, 0, 0.6);
+}
+
+/* ---- hours ---- */
+.hoursRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+  font-size: 0.92rem;
+}
+.hoursRow:last-child { border-bottom: 0; }
+
+/* ---- form frame ---- */
+.formCard {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: 1.4rem;
+}

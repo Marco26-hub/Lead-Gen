@@ -1,0 +1,19 @@
+packages:
+  - "packages/*"
+
+# Pin kysely: @better-auth/kysely-adapter (Better Auth 1.6) needs the 0.28.x
+# API (DEFAULT_MIGRATION_TABLE); kysely 0.29 removed it.
+overrides:
+  kysely: 0.28.17
+
+# Allow native deps to run install/build scripts.
+# sharp → Next image optimization; esbuild → tsx/drizzle-kit; unrs-resolver → eslint.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - unrs-resolver

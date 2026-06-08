@@ -1,0 +1,179 @@
+import { resolveCta } from "@maps/core";
+import styles from "./etnico.module.css";
+import { BookingForm } from "../BookingForm";
+import { splitPhotos } from "./shared";
+import type { DemoProps } from "./types";
+
+const FONTS = "https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap";
+const Star = () => (<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.8.7-5.1 4.6 1.5 6.7L12 17.8 5.9 20.3l1.5-6.7L2.3 9l6.8-.7z" /></svg>);
+const Stars = () => (<span className={styles.stars}>{[0, 1, 2, 3, 4].map((i) => <Star key={i} />)}</span>);
+const initials = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("");
+
+/** Etnico-Fusion — dark, eclectic, vivid (garnet/teal/yellow), Syne display. */
+export function EtnicoFusion({ model, rating, reviewCount, photos, openingHours }: DemoProps) {
+  const name = model.meta.businessName;
+  const phone = model.contact.phone;
+  const tel = phone ? `tel:${phone.replace(/\s+/g, "")}` : undefined;
+  const { pics, hero: heroPhoto, gallery, aboutPhoto } = splitPhotos(photos);
+  const hours = openingHours ?? [];
+  const menu = model.menu;
+
+  return (
+    <>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="stylesheet" href={FONTS} />
+      <div className={styles.root}>
+        <div className={styles.content}>
+          <header className={styles.nav}>
+            <div className={styles.wrap}>
+              <span className={styles.brand}><i className={styles.dot} /> {name}</span>
+              <nav className={styles.navlinks}>
+                <a href="#specialita">Specialità</a>
+                {menu && <a href="#menu">Menù</a>}
+                {gallery.length > 0 && <a href="#galleria">Galleria</a>}
+                <a href="#contatti">Contatti</a>
+              </nav>
+              <a className={`${styles.btn} ${styles.btnPrimary}`} href="#contatti">{model.hero.ctaLabel}</a>
+            </div>
+          </header>
+
+          <section className={styles.hero} id="top">
+            {heroPhoto ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className={styles.heroMedia} src={heroPhoto} alt={`${name} — piatti`} />
+            ) : (<div className={styles.heroEmpty} />)}
+            <div className={styles.heroScrim} />
+            <div className={`${styles.wrap} ${styles.heroInner} ${styles.reveal}`}>
+              <span className={styles.hbadge}>{model.meta.tagline}</span>
+              <h1 style={{ marginTop: 18 }}>{model.hero.headline}</h1>
+              <p className={styles.lead}>{model.hero.sub}</p>
+              <div className={styles.heroCta}>
+                <a className={`${styles.btn} ${styles.btnPrimary}`} href="#contatti">{model.hero.ctaLabel}</a>
+                {phone && <a className={`${styles.btn} ${styles.btnGhost}`} href={tel}>☎ {phone}</a>}
+                {rating != null && <span className={styles.ratingPill}><Stars /> <b>{rating.toFixed(1)}</b>{reviewCount ? <span style={{ opacity: .8 }}>· {reviewCount}</span> : null}</span>}
+              </div>
+            </div>
+          </section>
+
+          <section className={styles.block} id="specialita">
+            <div className={styles.wrap}>
+              <div className={styles.head}><span className={styles.eyebrow}>Le specialità</span><h2>Sapori che si incontrano</h2></div>
+              <div className={styles.svcGrid}>
+                {model.services.map((svc, i) => (
+                  <article className={`${styles.svc} ${styles.reveal}`} key={i} style={{ animationDelay: `${i * 70}ms` }}>
+                    <div className={`${styles.n} ${styles.grad}`}>{String(i + 1).padStart(2, "0")}</div>
+                    <h3>{svc.title}</h3>
+                    <p>{svc.desc}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {menu && (
+            <section className={`${styles.block} ${styles.menu}`} id="menu">
+              <div className={styles.wrap}>
+                <div className={styles.head}><span className={styles.eyebrow}>Il menù</span><h2>La nostra carta</h2>{menu.note && <p>{menu.note}</p>}</div>
+                <div className={styles.menuCard}>
+                  {menu.sections.map((sec, si) => (
+                    <div className={styles.menuSec} key={si}>
+                      <h3>{sec.name}</h3>
+                      <div className={styles.rule} />
+                      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 14 }}>
+                        {sec.items.map((it, ii) => (
+                          <li key={ii}>
+                            <div className={styles.mItem}>
+                              <span className={styles.nm}>{it.name}</span>
+                              {it.price && <span className={styles.leader} />}
+                              {it.price && <span className={styles.price}>{it.price}</span>}
+                            </div>
+                            {it.desc && <p className={styles.mDesc}>{it.desc}</p>}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {gallery.length > 0 && (
+            <section className={styles.block} id="galleria">
+              <div className={styles.wrap}>
+                <div className={styles.head}><span className={styles.eyebrow}>Galleria</span><h2>Dai nostri piatti</h2></div>
+                <div className={styles.gal}>
+                  {gallery.map((src, i) => (
+                    <figure className={styles.galItem} key={i}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={src} alt={`${name} — foto ${i + 1}`} loading="lazy" />
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {model.testimonials.length > 0 && (
+            <section className={styles.block}>
+              <div className={styles.wrap}>
+                <div className={styles.head}><span className={styles.eyebrow}>Recensioni</span><h2>Dicono di noi</h2></div>
+                <div className={styles.revGrid}>
+                  {model.testimonials.map((r, i) => (
+                    <article className={styles.rev} key={i}>
+                      <Stars />
+                      <p className={styles.q}>{r.quote}</p>
+                      <div className={styles.who}><span className={styles.av}>{initials(r.author)}</span><span><b>{r.author}</b></span><span className={styles.src}>Google</span></div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+
+          <section className={styles.block}>
+            <div className={`${styles.wrap} ${styles.about}`}>
+              <div>
+                <span className={styles.eyebrow}>La nostra storia</span>
+                <h2 style={{ marginTop: 12 }}>{model.about.title}</h2>
+                <p style={{ marginTop: 16, color: "var(--soft)" }}>{model.about.body}</p>
+              </div>
+              {aboutPhoto && (
+                <div className={styles.aboutImg}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={aboutPhoto} alt={`${name} — ambiente`} loading="lazy" />
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section className={`${styles.block} ${styles.contact}`} id="contatti">
+            <div className={`${styles.wrap} ${styles.cGrid}`}>
+              <div>
+                <span className={styles.eyebrow}>Contatti</span>
+                <h2 style={{ marginTop: 12 }}>{model.contact.ctaLabel}</h2>
+                {model.contact.note && <p style={{ marginTop: 14, color: "var(--soft)" }}>{model.contact.note}</p>}
+                <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", gap: 10 }}>
+                  {phone && <a href={tel} className={styles.chip}>☎ {phone}</a>}
+                  {model.contact.address && <span className={styles.chip}>📍 {model.contact.address}</span>}
+                </div>
+                {hours.length > 0 && (
+                  <div style={{ marginTop: 22, maxWidth: 380 }}>
+                    <span className={styles.eyebrow}>Orari</span>
+                    <div style={{ marginTop: 10 }}>
+                      {hours.map((h, i) => (<div className={styles.hoursRow} key={i}><span style={{ fontWeight: 600 }}>{h.day}</span><span style={{ color: "var(--soft)" }}>{h.hours}</span></div>))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className={styles.formCard}><BookingForm config={resolveCta("restaurant")} businessName={name} /></div>
+            </div>
+          </section>
+
+          <footer className={styles.foot}><div className={styles.wrap}>Anteprima dimostrativa per <b>{name}</b> · bozza non contrattuale</div></footer>
+        </div>
+      </div>
+    </>
+  );
+}

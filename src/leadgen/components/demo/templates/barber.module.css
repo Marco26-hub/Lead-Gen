@@ -1,0 +1,251 @@
+/* BarberShop — Workshop layout: hero+booking side-by-side, stacked rows */
+
+.root {
+  --fh: "Anton", Impact, sans-serif;
+  --fb: "IBM Plex Mono", "Courier New", monospace;
+  --bg: #0f0f0f;
+  --bg2: #161616;
+  --surface: #1a1a1a;
+  --ink: #c4bfb6;
+  --soft: #8a847c;
+  --muted: #5c574f;
+  --line: #2a2824;
+  --brand: #c9a23d;
+  --brand-deep: #a6852e;
+  --accent: #c44b2f;
+  --on-brand: #0f0f0f;
+  /* aliases for the shared BookingForm (demo.module.css) */
+  --text: var(--ink);
+  --primary: var(--brand);
+
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--fb);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
+}
+.root * { box-sizing: border-box; }
+.root :focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.root h1, .root h2, .root h3, .root h4 {
+  font-family: var(--fh); margin: 0; line-height: 0.92;
+  text-transform: uppercase; letter-spacing: .03em; font-weight: 400; color: #e8e2d8;
+  text-wrap: balance; overflow-wrap: break-word;
+}
+.root p { margin: 0; }
+.root a { color: inherit; text-decoration: none; }
+.root img { display: block; max-width: 100%; }
+
+.content { position: relative; z-index: 1; }
+.wrap { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.reveal { animation: fadeUp .5s cubic-bezier(.33,0,.2,1) both; }
+@media (prefers-reduced-motion: reduce) { .reveal { animation: none; } }
+
+/* ── HERO + BOOKING SPLIT ────────────────────────── */
+.hero {
+  position: relative; min-height: 100vh; min-height: 100dvh; display: flex; align-items: stretch;
+  overflow: hidden;
+}
+.heroMedia {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: .25; filter: grayscale(.8) contrast(1.1);
+}
+.heroScrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(15,15,15,.85) 0%, rgba(15,15,15,.6) 50%, rgba(15,15,15,.3) 100%);
+}
+.heroSplit {
+  position: relative; display: grid; grid-template-columns: 1fr 420px; gap: 48px;
+  align-items: center; padding: 80px 0; min-height: 100vh; min-height: 100dvh;
+}
+.heroLeft h1 {
+  font-size: clamp(44px, 7vw, 96px); max-width: 10ch; word-break: break-word;
+  text-shadow: 2px 2px 0 rgba(0,0,0,.4);
+}
+.heroLeft .lead { margin-top: 18px; max-width: 36ch; font-size: 14px; color: var(--soft); line-height: 1.65; }
+.ratingPill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); padding: 8px 14px; font-size: 12px; margin-top: 24px; color: var(--soft); }
+.stars { display: flex; gap: 2px; color: var(--brand); }
+.stars svg { width: 13px; height: 13px; }
+
+.heroRight {
+  background: var(--surface); border: 1px solid var(--line); padding: 32px;
+}
+
+/* ── NAV (inline after hero) ─────────────────────── */
+.nav { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 2px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.brand { font-family: var(--fh); font-size: 18px; text-transform: uppercase; letter-spacing: .06em; color: #e8e2d8; }
+.navlinks { display: flex; gap: 0; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.navlinks a { padding: 8px 14px; border-left: 1px solid var(--line); transition: color .15s, background .15s; }
+.navlinks a:first-child { border-left: none; }
+.navlinks a:hover { color: var(--brand); background: rgba(201,162,61,.06); }
+.navCta { font-family: var(--fh); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; background: var(--brand); color: var(--on-brand); padding: 8px 18px; border: 0; cursor: pointer; }
+.navCta:hover { background: var(--brand-deep); }
+
+/* ── BUTTONS ─────────────────────────────────────── */
+.btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fh); font-size: 13px; text-transform: uppercase; letter-spacing: .05em; border: 0; cursor: pointer; padding: 13px 22px; transition: transform .08s, background .15s; }
+.btn:active { transform: translateY(2px); }
+.btnPrimary { background: var(--brand); color: var(--on-brand); }
+.btnPrimary:hover { background: var(--brand-deep); }
+.btnGhost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btnGhost:hover { border-color: var(--brand); color: var(--brand); }
+
+/* ── BLOCKS ──────────────────────────────────────── */
+.block { padding: 64px 0; border-bottom: 1px solid var(--line); }
+.block:last-child { border-bottom: none; }
+.head { margin-bottom: 36px; }
+.head .eyebrow, .eyebrow { font-family: var(--fb); font-size: 10px; text-transform: uppercase; letter-spacing: .16em; color: var(--brand); display: block; margin-bottom: 8px; }
+.head h2 { font-size: clamp(28px, 4.5vw, 52px); }
+
+/* ── SERVICES — stacked rows ─────────────────────── */
+.svcList { display: flex; flex-direction: column; }
+.svcRow { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.svcRow:first-child { border-top: 1px solid var(--line); }
+.svcNum { font-family: var(--fh); font-size: 28px; color: var(--line); line-height: 1; padding-top: 2px; }
+.svcRow h3 { font-size: 16px; margin-bottom: 4px; }
+.svcRow p { font-size: 13px; color: var(--soft); line-height: 1.5; }
+
+/* ── SPLIT BLOCK (listino | team) ────────────────── */
+.splitBlock { padding: 64px 0; border-bottom: 1px solid var(--line); }
+.splitGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.splitLeft { padding-right: 40px; border-right: 1px solid var(--line); }
+.splitRight { padding-left: 40px; }
+
+/* ── PRICES ──────────────────────────────────────── */
+.priceSec { margin-bottom: 28px; }
+.priceSec h3 { font-size: 14px; color: var(--brand); margin-bottom: 12px; }
+.priceItem { display: flex; align-items: baseline; padding: 6px 0; gap: 8px; font-size: 13px; }
+.priceItem .nm { color: var(--ink); white-space: nowrap; }
+.priceItem .leader { flex: 1; border-bottom: 1px dotted var(--line); height: 1px; margin-bottom: 3px; }
+.priceItem .dur { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.priceItem .pr { color: var(--brand); font-weight: 600; white-space: nowrap; }
+
+/* ── TEAM — stacked rows ─────────────────────────── */
+.teamStack { display: flex; flex-direction: column; gap: 0; }
+.teamRow { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.teamRow:first-child { border-top: 1px solid var(--line); }
+.teamImg { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); filter: grayscale(.7); flex-shrink: 0; }
+.teamRow h3 { font-size: 15px; margin-bottom: 2px; }
+.teamRow .role { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+/* ── GALLERY ──────────────────────────────────────── */
+.gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); }
+.galItem { margin: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; }
+.galItem:nth-child(3n) { border-right: none; }
+.galItem img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4/3; filter: grayscale(.5); transition: filter .3s; }
+.galItem:hover img { filter: grayscale(0); }
+
+/* ── REVIEWS — stacked list ──────────────────────── */
+.revList { display: flex; flex-direction: column; }
+.revRow { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.revRow:first-child { border-top: 1px solid var(--line); }
+.revRow .q { margin: 10px 0; font-size: 14px; color: var(--soft); line-height: 1.6; }
+.revRow .who { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+
+/* ── CONTACT CHIPS ───────────────────────────────── */
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; font-size: 12px; border: 1px solid var(--line); color: var(--ink); transition: border-color .15s; }
+.chip:hover { border-color: var(--brand); }
+.hoursRow { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
+.hoursRow:last-child { border-bottom: none; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+.foot { background: var(--bg); border-top: 2px solid var(--line); padding: 36px 0; }
+.foot .wrap { display: flex; justify-content: space-between; align-items: flex-end; font-size: 11px; color: var(--muted); flex-wrap: wrap; gap: 12px; }
+.footBrand { font-family: var(--fh); font-size: clamp(32px, 5vw, 64px); text-transform: uppercase; color: var(--line); line-height: .9; margin-bottom: 16px; }
+
+/* ── STICKY ──────────────────────────────────────── */
+.stickyCta { position: fixed; bottom: 0; left: 0; right: 0; z-index: 70; background: var(--bg); border-top: 2px solid var(--line); padding: 10px 16px; display: none; }
+.stickyCta a { width: 100%; justify-content: center; }
+
+/* ── HAMBURGER ────────────────────────────────────── */
+.hamburger { display: none; }
+.hamburgerLabel {
+  display: none; cursor: pointer; width: 44px; height: 44px;
+  position: relative; z-index: 60;
+}
+.hamburgerLabel span, .hamburgerLabel span::before, .hamburgerLabel span::after {
+  display: block; position: absolute; height: 2px; width: 22px;
+  background: var(--ink); transition: transform .2s, opacity .2s;
+}
+.hamburgerLabel span { top: 21px; left: 11px; }
+.hamburgerLabel span::before { content: ""; top: -7px; }
+.hamburgerLabel span::after { content: ""; top: 7px; }
+.hamburger:checked ~ .nav .hamburgerLabel span { background: transparent; }
+.hamburger:checked ~ .nav .hamburgerLabel span::before { transform: rotate(45deg); top: 0; }
+.hamburger:checked ~ .nav .hamburgerLabel span::after { transform: rotate(-45deg); top: 0; }
+
+/* ── PREMIUM POLISH ──────────────────────────────── */
+/* Ambient forge-light behind transparent sections (fixed = stays while scrolling) */
+.root::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(140% 90% at 88% -15%, rgba(201,162,61,.10), transparent 58%),
+    radial-gradient(120% 80% at -8% 116%, rgba(196,75,47,.06), transparent 55%);
+}
+.root ::selection { background: var(--brand); color: var(--on-brand); }
+
+.btnPrimary { box-shadow: inset 0 0 0 1px rgba(0,0,0,.18); transition: transform .08s, background .15s, box-shadow .2s; }
+.btnPrimary:hover { box-shadow: 0 6px 22px rgba(201,162,61,.22); }
+.navCta { transition: background .15s, box-shadow .2s; }
+.navCta:hover { box-shadow: 0 5px 18px rgba(201,162,61,.26); }
+
+/* Row micro-interactions */
+.svcRow { transition: background .25s; }
+.svcRow:hover { background: linear-gradient(90deg, rgba(201,162,61,.07), transparent 72%); }
+.svcRow:hover .svcNum { color: var(--brand); }
+.priceItem .nm { transition: color .15s; }
+.priceItem:hover .nm { color: #e8e2d8; }
+.teamRow { transition: background .25s; }
+.teamRow:hover { background: rgba(201,162,61,.05); }
+.teamRow:hover .teamImg { filter: grayscale(0); }
+.chip { transition: border-color .15s, color .15s; }
+.chip:hover { color: var(--brand); }
+
+/* Scroll-driven entrance — progressive enhancement, motion-safe */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .head, .svcRow, .priceSec, .teamRow, .galItem, .revRow {
+      animation: fadeUp .6s cubic-bezier(.33,0,.2,1) both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 15%;
+    }
+  }
+}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .stickyCta { display: block; }
+  .hamburgerLabel { display: flex; align-items: center; justify-content: center; }
+  .navlinks {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg); z-index: 55; flex-direction: column;
+    align-items: center; justify-content: center; gap: 24px;
+  }
+  .hamburger:checked ~ .content .navlinks { display: flex; }
+  .hamburger:checked ~ .content .navCta { display: none; }
+  .navlinks a { font-size: 18px; padding: 12px 24px; border: none; }
+  .heroSplit { grid-template-columns: 1fr; gap: 32px; padding: 60px 0; }
+  .heroLeft h1 { font-size: clamp(32px, 10vw, 48px); }
+  .splitGrid { grid-template-columns: 1fr; }
+  .splitLeft { padding-right: 0; border-right: none; border-bottom: 1px solid var(--line); padding-bottom: 40px; margin-bottom: 40px; }
+  .splitRight { padding-left: 0; }
+  .gal { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .wrap { padding: 0 16px; }
+  .hero { min-height: auto; }
+  .heroSplit { min-height: auto; padding: 40px 0; }
+  .block, .splitBlock { padding: 48px 0; }
+  .btn { min-height: 44px; padding: 11px 18px; font-size: 12px; touch-action: manipulation; }
+  .heroRight { padding: 24px 16px; }
+  .chip { min-height: 44px; }
+  .hoursRow { min-height: 44px; align-items: center; }
+}

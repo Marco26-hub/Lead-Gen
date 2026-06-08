@@ -1,0 +1,230 @@
+/* DonnaSalone — Magazine spread: side-by-side sections, horizontal scroll team */
+
+.root {
+  --fh: "Playfair Display", Georgia, serif;
+  --fb: "DM Sans", system-ui, sans-serif;
+  --bg: #151113;
+  --bg2: #1c1719;
+  --surface: #221c1f;
+  --ink: #ece4de;
+  --soft: #b0a49e;
+  --muted: #70625c;
+  --line: #332a2e;
+  --brand: #b8892a;
+  --brand-deep: #96701e;
+  --accent: #6b2840;
+  /* aliases for the shared BookingForm (demo.module.css) */
+  --text: var(--ink);
+  --primary: var(--brand);
+
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--fb);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
+}
+.root * { box-sizing: border-box; }
+.root :focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.root h1, .root h2, .root h3, .root h4 { font-family: var(--fh); margin: 0; line-height: 1.05; font-weight: 600; text-wrap: balance; overflow-wrap: break-word; font-feature-settings: "liga" 1, "kern" 1; }
+.root p { margin: 0; }
+.root a { color: inherit; text-decoration: none; }
+.root img { display: block; max-width: 100%; }
+
+.content { position: relative; z-index: 1; }
+.wrap { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.reveal { animation: fadeUp .8s cubic-bezier(.22,.7,.22,1) both; }
+@media (prefers-reduced-motion: reduce) { .reveal { animation: none; } }
+
+/* ── NAV ─────────────────────────────────────────── */
+.nav { position: sticky; top: 0; z-index: 50; background: rgba(21,17,19,.9); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.brand { font-family: var(--fh); font-size: 20px; color: var(--ink); letter-spacing: -.01em; }
+.navlinks { display: flex; gap: 0; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.navlinks a { padding: 8px 14px; transition: color .2s; }
+.navlinks a:first-child { padding-left: 0; }
+.navlinks a:hover { color: var(--brand); }
+.btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fb); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; border: 0; cursor: pointer; padding: 11px 22px; border-radius: 0; transition: background .2s, transform .12s; }
+.btn:active { transform: translateY(1px); }
+.btnPrimary { background: var(--brand); color: #151113; }
+.btnPrimary:hover { background: #d4b060; }
+.btnGhost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btnGhost:hover { border-color: var(--brand); color: var(--brand); }
+
+/* ── HERO — magazine cover ───────────────────────── */
+.hero { padding: 0; }
+.heroGrid { display: grid; grid-template-columns: 1.2fr 1fr; min-height: 85vh; }
+.heroImgWrap { overflow: hidden; }
+.heroImgWrap img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.03) saturate(.9); }
+.heroPlaceholder { width: 100%; height: 100%; background: var(--accent); }
+.heroTextSide { padding: 72px 56px; display: flex; flex-direction: column; justify-content: center; }
+.eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: .2em; color: var(--brand); display: block; margin-bottom: 12px; }
+.hero h1 { font-size: clamp(32px, 4.5vw, 56px); margin-bottom: 16px; }
+.hero .lead { font-size: 15px; color: var(--soft); max-width: 30ch; margin-bottom: 24px; line-height: 1.7; }
+.heroActions { display: flex; gap: 10px; flex-wrap: wrap; }
+.ratingPill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); padding: 7px 12px; font-size: 13px; margin-top: 20px; }
+.stars { display: flex; gap: 2px; color: var(--brand); }
+.stars svg { width: 12px; height: 12px; }
+
+/* ── SPREAD — side by side sections ──────────────── */
+.spread { padding: 80px 0; }
+.spreadGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.spreadLeft { padding-right: 40px; border-right: 1px solid var(--line); }
+.spreadRight { padding-left: 40px; }
+.sectionHead { margin-bottom: 40px; }
+.sectionHead h2 { font-size: clamp(26px, 3vw, 42px); }
+
+/* ── SERVICES ────────────────────────────────────── */
+.svcList { display: flex; flex-direction: column; }
+.svcItem { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.svcItem:first-child { border-top: 1px solid var(--line); }
+.svcItem h3 { font-size: 20px; margin-bottom: 6px; }
+.svcItem p { font-size: 13px; color: var(--soft); line-height: 1.6; }
+
+/* ── PRICES ──────────────────────────────────────── */
+.priceSec { margin-bottom: 28px; }
+.priceSec h3 { font-size: 18px; color: var(--brand); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.priceItem { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.priceItem .nm { font-size: 14px; }
+.priceItem .pr { font-size: 15px; color: var(--brand); font-weight: 600; }
+
+/* ── TEAM — horizontal scroll ────────────────────── */
+.teamSection { padding: 80px 0 0; }
+.teamScroll { display: flex; gap: 20px; overflow-x: auto; padding: 0 28px 40px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.teamScroll::-webkit-scrollbar { height: 4px; }
+.teamScroll::-webkit-scrollbar-track { background: var(--line); }
+.teamScroll::-webkit-scrollbar-thumb { background: var(--brand); }
+.teamCard { flex: 0 0 260px; scroll-snap-align: start; text-align: center; }
+.teamImg { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 12px; border: 1px solid var(--line); filter: saturate(.9); }
+.teamCard h3 { font-size: 16px; margin-bottom: 2px; }
+.teamCard .role { font-size: 11px; color: var(--brand); text-transform: uppercase; letter-spacing: .06em; }
+
+/* ── GALLERY ──────────────────────────────────────── */
+.gal { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.galItem { overflow: hidden; }
+.galItem:nth-child(1) { grid-column: span 2; }
+.galItem img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4/3; transition: transform .4s; }
+.galItem:nth-child(1) img { aspect-ratio: 21/9; }
+.galItem:hover img { transform: scale(1.03); }
+
+/* ── REVIEWS ─────────────────────────────────────── */
+.revCard { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.revCard:first-of-type { border-top: 1px solid var(--line); }
+.revCard .q { margin: 12px 0; font-size: 14px; color: var(--soft); line-height: 1.65; font-style: italic; }
+.revCard .who { font-size: 12px; color: var(--muted); }
+
+/* ── BOOKING CALLOUT ─────────────────────────────── */
+.bookingCallout { padding: 80px 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.bookingInner { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.bookingText { padding-right: 48px; border-right: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; }
+.bookingText h2 { font-size: clamp(26px, 3vw, 40px); margin-bottom: 16px; }
+.bookingText p { color: var(--soft); line-height: 1.7; font-size: 14px; margin-bottom: 20px; }
+.contactChips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; font-size: 12px; color: var(--soft); border: 1px solid var(--line); }
+.hoursBlock { margin-top: 8px; }
+.hoursRow { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.hoursRow:last-child { border-bottom: none; }
+.bookingForm { padding-left: 48px; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+.foot { background: var(--bg2); border-top: 1px solid var(--line); padding: 32px 0; }
+.foot .wrap { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); flex-wrap: wrap; gap: 10px; }
+.foot b { color: var(--ink); }
+.footBrand { font-family: var(--fh); font-size: clamp(24px, 3vw, 36px); color: var(--ink); }
+
+/* ── STICKY ──────────────────────────────────────── */
+.stickyCta { position: fixed; bottom: 0; left: 0; right: 0; z-index: 70; background: var(--bg); border-top: 1px solid var(--line); padding: 10px 16px; display: none; }
+.stickyCta a { width: 100%; justify-content: center; }
+
+/* ── HAMBURGER ────────────────────────────────────── */
+.hamburger { display: none; }
+.hamburgerLabel {
+  display: none; cursor: pointer; width: 44px; height: 44px;
+  position: relative; z-index: 60;
+}
+.hamburgerLabel span, .hamburgerLabel span::before, .hamburgerLabel span::after {
+  display: block; position: absolute; height: 2px; width: 22px;
+  background: var(--ink); transition: transform .2s, opacity .2s;
+}
+.hamburgerLabel span { top: 21px; left: 11px; }
+.hamburgerLabel span::before { content: ""; top: -7px; }
+.hamburgerLabel span::after { content: ""; top: 7px; }
+.hamburger:checked ~ .nav .hamburgerLabel span { background: transparent; }
+.hamburger:checked ~ .nav .hamburgerLabel span::before { transform: rotate(45deg); top: 0; }
+.hamburger:checked ~ .nav .hamburgerLabel span::after { transform: rotate(-45deg); top: 0; }
+
+/* ── PREMIUM POLISH ──────────────────────────────── */
+/* Warm boudoir glow — gold top-right, burgundy bottom-left */
+.root::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(70% 55% at 100% 0%, rgba(184,137,42,.10), transparent 58%),
+    radial-gradient(80% 60% at 0% 100%, rgba(107,40,64,.18), transparent 60%);
+}
+.root ::selection { background: var(--brand); color: #151113; }
+
+.btnPrimary { transition: background .2s, transform .12s, box-shadow .25s; }
+.btnPrimary:hover { box-shadow: 0 6px 22px rgba(184,137,42,.25); }
+
+.svcItem { transition: padding-left .2s; }
+.svcItem:hover { padding-left: 8px; }
+.svcItem:hover h3 { color: var(--brand); }
+.priceItem .nm { transition: color .15s; }
+.priceItem:hover .nm { color: #fff; }
+.teamCard { transition: transform .3s; }
+.teamCard:hover { transform: translateY(-4px); }
+.teamCard:hover .teamImg { filter: saturate(1.05); border-color: var(--brand); }
+/* Soften the horizontal team-scroll edges */
+.teamScroll { -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.chip { transition: border-color .2s, color .2s; }
+.chip:hover { border-color: var(--brand); color: var(--ink); }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .sectionHead, .svcItem, .priceSec, .revCard, .galItem, .bookingText {
+      animation: fadeUp .7s cubic-bezier(.22,.7,.22,1) both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 16%;
+    }
+  }
+}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .stickyCta { display: block; }
+  .hamburgerLabel { display: flex; align-items: center; justify-content: center; }
+  .navlinks {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg); z-index: 55; flex-direction: column;
+    align-items: center; justify-content: center; gap: 24px;
+  }
+  .hamburger:checked ~ .content .navlinks { display: flex; }
+  .navlinks a { font-size: 18px; padding: 12px 24px; }
+  .heroGrid { grid-template-columns: 1fr; }
+  .heroImgWrap { height: 50vh; }
+  .heroTextSide { padding: 40px 24px; }
+  .spreadGrid { grid-template-columns: 1fr; }
+  .spreadLeft { padding-right: 0; border-right: none; border-bottom: 1px solid var(--line); padding-bottom: 40px; margin-bottom: 40px; }
+  .spreadRight { padding-left: 0; }
+  .bookingInner { grid-template-columns: 1fr; }
+  .bookingText { padding-right: 0; border-right: none; border-bottom: 1px solid var(--line); padding-bottom: 40px; margin-bottom: 40px; }
+  .bookingForm { padding-left: 0; }
+  .teamScroll { padding-bottom: 24px; }
+}
+@media (max-width: 480px) {
+  .wrap { padding: 0 16px; }
+  .heroTextSide { padding: 32px 16px; }
+  .spread, .teamSection, .bookingCallout { padding: 56px 0; }
+  .btn { min-height: 44px; padding: 9px 16px; font-size: 11px; touch-action: manipulation; }
+  .chip { min-height: 44px; }
+  .hoursRow { min-height: 44px; align-items: center; }
+  .galItem { min-height: 120px; }
+}

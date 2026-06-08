@@ -1,0 +1,33 @@
+{
+  "name": "@maps/orchestrator",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape": "tsx src/cli/scrape.ts",
+    "classify": "tsx src/cli/classify.ts",
+    "score": "tsx src/cli/score.ts",
+    "generate": "tsx src/cli/generate.ts",
+    "outreach": "tsx src/cli/outreach.ts",
+    "outreach:whatsapp": "tsx src/cli/whatsapp.ts",
+    "enrich:instagram": "tsx src/cli/enrich-instagram.ts",
+    "send:demo": "tsx src/cli/send-demo.ts",
+    "worker": "tsx src/cli/worker.ts",
+    "backfill:phone": "tsx src/cli/backfill-phone-type.ts",
+    "backfill:instagram": "tsx src/cli/backfill-instagram-handle.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@maps/core": "workspace:*",
+    "@supabase/supabase-js": "^2.45.0",
+    "apify-client": "^2.9.3",
+    "cheerio": "^1.0.0",
+    "resend": "^4.0.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.0"
+  }
+}
