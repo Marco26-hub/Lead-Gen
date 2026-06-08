@@ -1,4 +1,5 @@
 packages:
+  - "apps/*"
   - "packages/*"
 
 # Pin kysely: @better-auth/kysely-adapter (Better Auth 1.6) needs the 0.28.x

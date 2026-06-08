@@ -9,11 +9,13 @@ overrides:
 
 importers:
 
-  .:
+  .: {}
+
+  apps/web:
     dependencies:
       '@maps/core':
         specifier: workspace:*
-        version: link:packages/core
+        version: link:../../packages/core
       '@supabase/supabase-js':
         specifier: ^2.45.0
         version: 2.107.0
