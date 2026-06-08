@@ -6,8 +6,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Lint is run separately; don't let it block production builds.
-  eslint: { ignoreDuringBuilds: true },
   // @maps/core is a workspace package shipped as TypeScript source.
   transpilePackages: ["@maps/core"],
   // App lives in apps/web inside a pnpm workspace — trace files from repo root
