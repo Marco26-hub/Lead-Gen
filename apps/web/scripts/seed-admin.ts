@@ -40,7 +40,7 @@ async function main() {
   const { db } = await import("../src/lib/db");
   const { user, account } = await import("../src/lib/db/schema");
   const { hashPassword } = await import("better-auth/crypto");
-  const { eq } = await import("drizzle-orm");
+  const { eq, and } = await import("drizzle-orm");
 
   const email = process.env.SEED_ADMIN_EMAIL?.trim();
   const password = process.env.SEED_ADMIN_PASSWORD;
@@ -53,20 +53,45 @@ async function main() {
     throw new Error("Set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD first.");
   }
 
-  const existing = await db.select().from(user).where(eq(user.email, email));
-  if (existing.length > 0) {
-    await db
-      .update(user)
-      .set({ role: "admin", updatedAt: new Date() })
-      .where(eq(user.email, email));
-    console.log(`✓ User ${email} already exists — ensured role=admin.`);
-    return;
-  }
-
-  const userId = randomUUID();
   const now = new Date();
   const hashed = await hashPassword(password);
 
+  const existing = await db.select().from(user).where(eq(user.email, email));
+  if (existing.length > 0) {
+    // User exists → ensure admin + (re)set the password on the credential account.
+    const u = existing[0];
+    await db
+      .update(user)
+      .set({ role: "admin", updatedAt: now })
+      .where(eq(user.id, u.id));
+
+    const creds = await db
+      .select()
+      .from(account)
+      .where(and(eq(account.userId, u.id), eq(account.providerId, "credential")));
+
+    if (creds.length > 0) {
+      await db
+        .update(account)
+        .set({ password: hashed, updatedAt: now })
+        .where(eq(account.id, creds[0].id));
+    } else {
+      await db.insert(account).values({
+        id: randomUUID(),
+        accountId: u.id,
+        providerId: "credential",
+        userId: u.id,
+        password: hashed,
+        createdAt: now,
+        updatedAt: now,
+      });
+    }
+    console.log(`✓ Admin ${email} aggiornato (role=admin, password reimpostata).`);
+    return;
+  }
+
+  // New user → create user + credential account.
+  const userId = randomUUID();
   await db.insert(user).values({
     id: userId,
     name,
@@ -86,7 +111,7 @@ async function main() {
     updatedAt: now,
   });
 
-  console.log(`✓ Created admin ${email}.`);
+  console.log(`✓ Nuovo admin creato: ${email}.`);
 }
 
 main()
