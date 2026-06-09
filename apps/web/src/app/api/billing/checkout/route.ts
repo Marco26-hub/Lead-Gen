@@ -74,6 +74,13 @@ export async function GET(req: Request): Promise<Response> {
     customer: existingCustomerId ?? undefined,
     customer_email: existingCustomerId ? undefined : lead.email ?? undefined,
     client_reference_id: leadId,
+    // Stripe Tax: calcola e aggiunge l'IVA automaticamente (richiede Stripe Tax
+    // attivo in dashboard + registrazione IT + default tax behavior). Raccoglie
+    // l'indirizzo di fatturazione (necessario al calcolo) e la P.IVA del cliente B2B.
+    automatic_tax: { enabled: true },
+    billing_address_collection: "required",
+    tax_id_collection: { enabled: true },
+    customer_update: existingCustomerId ? { address: "auto", name: "auto" } : undefined,
     subscription_data: {
       metadata: {
         lead_id: leadId,
