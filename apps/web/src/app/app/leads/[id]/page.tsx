@@ -11,6 +11,7 @@ import { WhatsAppButton } from "@/leadgen/components/WhatsAppButton";
 import { TemplateSelector } from "@/leadgen/components/TemplateSelector";
 import { TrialButton } from "@/leadgen/components/TrialButton";
 import { BillingButtons } from "@/leadgen/components/BillingButtons";
+import { ConvertClientButton } from "@/leadgen/components/ConvertClientButton";
 import { presetFromCategory, type ReviewItem, type TechStack, type ThemePreset } from "@maps/core";
 
 export const dynamic = "force-dynamic";
@@ -49,8 +50,14 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
         <PriorityBadge p={lead.priority} />
         <SiteBadge s={lead.site_age_class} />
         <StatusPill status={lead.status} />
+        <div className="ml-auto">
+          <ConvertClientButton leadId={lead.id} alreadyClient={Boolean(lead.client_id)} />
+        </div>
       </div>
-      <p className="mt-1 text-zinc-400">{lead.category ?? "—"}</p>
+      <p className="mt-1 text-zinc-400">
+        {lead.category ?? "—"}
+        {lead.city ? ` · ${lead.city}` : ""}
+      </p>
 
       <section className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-400">Gestione (CRM)</h2>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { listLeads, type LeadFilters } from "@/leadgen/lib/db";
-import { PriorityBadge, SiteBadge, SourceBadge, StatusPill } from "@/leadgen/components/badges";
+import { LeadsTable } from "@/leadgen/components/LeadsTable";
 import { sectorMeta, type SectorKey } from "@/leadgen/lib/sectors";
 
 export const dynamic = "force-dynamic";
@@ -129,55 +129,15 @@ export default async function LeadsPage({
       {dbError ? (
         <div className="mt-8 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-200">{dbError}</div>
       ) : leads.length === 0 ? (
-        <p className="mt-8 text-zinc-400">Nessun lead trovato. {sp.q || sp.priority || sp.status ? <Link href="/app/leads" className="text-indigo-300 hover:underline">azzera i filtri</Link> : <>Avvia uno <Link href="/app/scrape" className="text-indigo-300 hover:underline">scraping</Link>.</>}</p>
+        <p className="mt-8 text-zinc-400">Nessun lead trovato. {sp.q || sp.priority || sp.status || hasContextFilter ? <Link href="/app/leads" className="text-indigo-300 hover:underline">azzera i filtri</Link> : <>Avvia uno <Link href="/app/scrape" className="text-indigo-300 hover:underline">scraping</Link>.</>}</p>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-xl border border-zinc-800">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-zinc-900/70 text-xs uppercase tracking-wide text-zinc-400">
-              <tr>
-                {COLUMNS.map((c) => {
-                  const active = sp.sort === c.key;
-                  return (
-                    <th key={c.key} className="px-4 py-3 font-semibold">
-                      <Link href={sortHref(c.key)} className={`inline-flex items-center gap-1 transition-colors hover:text-zinc-100 ${active ? "text-indigo-300" : ""}`}>
-                        {c.label}
-                        <span className="text-[10px] opacity-80">{active ? (sp.dir === "desc" ? "▼" : "▲") : "↕"}</span>
-                      </Link>
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800">
-              {leads.map((l) => (
-                <tr key={l.id} className="hover:bg-zinc-900/40">
-                  <td className="px-4 py-3">
-                    <Link href={`/app/leads/${l.id}`} className="font-medium text-zinc-100 hover:text-indigo-300">{l.business_name}</Link>
-                    <div className="text-xs text-zinc-500">{l.address ?? "—"}</div>
-                  </td>
-                  <td className="px-4 py-3"><SourceBadge source={l.source} /></td>
-                  <td className="px-4 py-3 text-zinc-300">{l.category ?? "—"}</td>
-                  <td className="px-4 py-3 text-zinc-300">
-                    {l.rating != null ? `${l.rating}★` : "—"}
-                    <span className="text-zinc-500"> ({l.review_count ?? 0})</span>
-                  </td>
-                  <td className="px-4 py-3">
-                    {l.phone_type === "mobile" ? (
-                      <span className="rounded bg-emerald-500/15 px-2 py-0.5 text-xs text-emerald-300 ring-1 ring-emerald-500/30">📱 sì</span>
-                    ) : l.phone_e164 ? (
-                      <span className="text-xs text-zinc-500">fisso</span>
-                    ) : (
-                      <span className="text-zinc-600">—</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3"><SiteBadge s={l.site_age_class} /></td>
-                  <td className="px-4 py-3"><PriorityBadge p={l.priority} /></td>
-                  <td className="px-4 py-3"><StatusPill status={l.status} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <LeadsTable
+          leads={leads}
+          columns={COLUMNS}
+          sortHrefs={Object.fromEntries(COLUMNS.map((c) => [c.key, sortHref(c.key)]))}
+          activeSort={sp.sort}
+          activeDir={sp.dir}
+        />
       )}
     </main>
   );

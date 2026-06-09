@@ -3,7 +3,7 @@ import Link from "next/link";
 export function WebsiteLeadsCard({ count }: { count: number }) {
   return (
     <Link
-      href="/app/leads?source=website"
+      href="/app/contacts"
       className="group flex items-center gap-4 rounded-2xl border border-sky-500/30 bg-sky-500/10 p-5 transition-colors hover:bg-sky-500/15"
     >
       <span className="text-2xl">✉️</span>

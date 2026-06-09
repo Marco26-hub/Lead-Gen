@@ -63,6 +63,19 @@ export async function listLeads(filters: LeadFilters = {}, limit = 500): Promise
   return rows;
 }
 
+/** Lead dal form del sito (source='website'), recenti-prima. Per la vista Contatti. */
+export async function listWebsiteLeads(limit = 200): Promise<LeadRow[]> {
+  const sb = getServiceClient();
+  const { data, error } = await sb
+    .from("leads")
+    .select("*")
+    .eq("source", "website")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(error.message);
+  return (data ?? []) as LeadRow[];
+}
+
 export async function getLead(id: string): Promise<LeadRow | null> {
   const sb = getServiceClient();
   const { data, error } = await sb.from("leads").select("*").eq("id", id).maybeSingle();

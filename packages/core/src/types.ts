@@ -141,6 +141,8 @@ export interface LeadRow {
   status: LeadStatus;
   /** Provenienza del lead: 'maps' (scraping) | 'website' (form del sito). */
   source: string;
+  /** Se valorizzato, il lead è stato convertito in cliente (agency.clients.id). */
+  client_id: string | null;
   email_eligible: boolean;
   consent_basis: string | null;
   notes: string | null;

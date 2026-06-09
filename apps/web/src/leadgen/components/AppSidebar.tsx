@@ -8,9 +8,12 @@ type NavItem = { href: string; label: string; icon: string; exact?: boolean };
 const NAV: NavItem[] = [
   { href: "/app", label: "Panoramica", icon: "🏠", exact: true },
   { href: "/app/leads", label: "Lead", icon: "🎯" },
+  { href: "/app/board", label: "Pipeline", icon: "🗂️" },
+  { href: "/app/contacts", label: "Contatti sito", icon: "✉️" },
   { href: "/app/clients", label: "Clienti", icon: "🤝" },
   { href: "/app/appointments", label: "Appuntamenti", icon: "📅" },
   { href: "/app/scrape", label: "Scraping", icon: "🔍" },
+  { href: "/app/analytics", label: "Analytics", icon: "📊" },
   { href: "/app/settings", label: "Impostazioni", icon: "⚙️" },
 ];
 
