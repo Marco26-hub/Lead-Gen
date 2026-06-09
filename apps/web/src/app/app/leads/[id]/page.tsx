@@ -83,6 +83,12 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
         )}
       </section>
 
+      {lead.phone_type === "mobile" && (
+        <Section title="Conversazione WhatsApp" className="mt-6">
+          <WhatsAppConversation id={lead.id} />
+        </Section>
+      )}
+
       {lead.slug && (
         <section className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -118,12 +124,6 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
       {lead.slug && (
         <Section title={`Foto (${(lead.photos ?? []).length})`} className="mt-6">
           <PhotoManager id={lead.id} photos={(lead.photos ?? []) as string[]} />
-        </Section>
-      )}
-
-      {lead.phone_type === "mobile" && (
-        <Section title="Conversazione WhatsApp" className="mt-6">
-          <WhatsAppConversation id={lead.id} />
         </Section>
       )}
 

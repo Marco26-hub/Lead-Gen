@@ -80,12 +80,15 @@ export async function POST(req: Request): Promise<Response> {
 
   // Match the lead by stored E.164 phone. May be null (unknown sender) — we still record the
   // message so a hot lead on a different number is never silently dropped.
-  const { data: leadRow } = await sb
+  // A phone may (rarely) match more than one lead — take the most recent rather than
+  // erroring out: maybeSingle() throws on multiple rows, which would orphan the message.
+  const { data: leadRows } = await sb
     .from("leads")
     .select("id, business_name, status")
     .eq("phone_e164", from)
-    .maybeSingle();
-  const lead = leadRow as { id: string; business_name: string; status: string } | null;
+    .order("created_at", { ascending: false })
+    .limit(1);
+  const lead = (leadRows?.[0] ?? null) as { id: string; business_name: string; status: string } | null;
 
   // Record the inbound message (idempotent on Twilio's MessageSid → safe on webhook retries).
   // On a persist failure, return 5xx (no TwiML) so Twilio retries rather than silently losing it.
