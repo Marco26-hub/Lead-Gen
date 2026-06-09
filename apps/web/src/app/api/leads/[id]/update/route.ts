@@ -24,6 +24,16 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (typeof body.notes === "string") patch.notes = body.notes;
   if (typeof body.email === "string") patch.email = body.email.trim() || null;
   if (typeof body.status === "string" && ALLOWED_STATUS.has(body.status)) patch.status = body.status;
+  if (typeof body.phone_e164 === "string") {
+    const v = body.phone_e164.trim().replace(/\s+/g, "");
+    if (v === "") patch.phone_e164 = null;
+    else if (/^\+\d{6,15}$/.test(v)) patch.phone_e164 = v;
+    else return Response.json({ ok: false, error: "Numero non valido — usa il formato E.164, es. +393476859658." }, { status: 400 });
+  }
+  if (typeof body.phone_type === "string") {
+    if (body.phone_type === "") patch.phone_type = null;
+    else if (["mobile", "fixed", "other"].includes(body.phone_type)) patch.phone_type = body.phone_type;
+  }
   if (typeof body.template === "string" && isTemplateKey(body.template)) patch.template = body.template;
   if (Array.isArray(body.photos)) {
     // Reorder/curate photos — hero is photos[0], gallery is slice(1, 9) in every

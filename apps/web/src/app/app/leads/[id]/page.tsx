@@ -62,7 +62,7 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
 
       <section className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-400">Gestione (CRM)</h2>
-        <LeadEditor id={lead.id} status={lead.status} notes={lead.notes} email={lead.email} />
+        <LeadEditor id={lead.id} status={lead.status} notes={lead.notes} email={lead.email} phone={lead.phone_e164} phoneType={lead.phone_type} />
         {activeSub && (
           <div className="mt-3 rounded-lg border border-amber-400/30 bg-amber-400/5 px-3 py-2 text-xs text-amber-200">
             <strong className="uppercase tracking-wide">{activeSub.status}</strong> · pacchetto{" "}
