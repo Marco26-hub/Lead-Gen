@@ -2,6 +2,17 @@ import { revalidatePath } from "next/cache";
 import Stripe from "stripe";
 import { env, getServiceClient, type SubscriptionStatus } from "@maps/core";
 import { getStripe } from "@maps/core/stripe";
+import { ensureClientForLead } from "@/leadgen/lib/clients";
+
+/** Auto-conversione lead→cliente quando diventa pagante (best-effort, non blocca il webhook). */
+async function autoConvertClient(leadId: string): Promise<void> {
+  try {
+    const r = await ensureClientForLead(leadId);
+    if (r.created) revalidatePath("/app/clients");
+  } catch (e) {
+    console.error("[stripe-webhook] auto-convert client failed", leadId, (e as Error).message);
+  }
+}
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs"; // serve raw body → no Edge
@@ -136,6 +147,7 @@ export async function POST(req: Request): Promise<Response> {
           // pagamento ancora non andato a buon fine.
           if (isRevenueGenerating(sub.status)) {
             await sb.from("leads").update({ status: "paying" }).eq("id", leadId);
+            await autoConvertClient(leadId);
             // Revalida la demo (banner buyer sparisce)
             const { data: leadRow } = await sb.from("leads").select("slug").eq("id", leadId).maybeSingle();
             if (leadRow?.slug) revalidatePath(`/d/${leadRow.slug as string}`);
@@ -153,6 +165,7 @@ export async function POST(req: Request): Promise<Response> {
           await upsertSubscription(sb, leadId, sub, { packageId, billing });
           if (isRevenueGenerating(sub.status)) {
             await sb.from("leads").update({ status: "paying" }).eq("id", leadId);
+            await autoConvertClient(leadId);
           } else {
             // Sub appena passata in past_due/paused/canceled/incomplete:
             // se non ha altre sub attive, downgrade a 'churned'.
