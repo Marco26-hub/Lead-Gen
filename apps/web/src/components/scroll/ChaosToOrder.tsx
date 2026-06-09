@@ -206,7 +206,7 @@ export function ChaosToOrder() {
             </motion.span>
             <motion.span
               style={{ opacity: orderOpacity }}
-              className="absolute -bottom-2 font-mono text-[11px] uppercase tracking-[0.5em] text-accent"
+              className="absolute top-[72%] font-mono text-[11px] uppercase tracking-[0.5em] text-accent"
             >
               {t.chaos.resolved}
             </motion.span>
