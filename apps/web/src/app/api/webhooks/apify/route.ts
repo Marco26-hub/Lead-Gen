@@ -34,7 +34,7 @@ export async function POST(req: Request): Promise<Response> {
   try {
     const items = await fetchDatasetItems(datasetId);
     const places = items.map((it) => mapApifyItem(it as Record<string, unknown>)).filter((p) => p.placeId && p.title);
-    const result = await upsertLeads(places, (job?.category as string) ?? "");
+    const result = await upsertLeads(places, (job?.category as string) ?? "", (job?.city as string) ?? "");
     if (jobId)
       await sb.from("scrape_jobs").update({ status: "done", lead_count: result.advanced, dataset_id: datasetId }).eq("id", jobId);
     return Response.json({ ok: true, advanced: result.advanced });

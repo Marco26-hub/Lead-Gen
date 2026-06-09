@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listLeads, type LeadFilters } from "@/leadgen/lib/db";
 import { PriorityBadge, SiteBadge, SourceBadge, StatusPill } from "@/leadgen/components/badges";
+import { sectorMeta, type SectorKey } from "@/leadgen/lib/sectors";
 
 export const dynamic = "force-dynamic";
 
@@ -23,10 +24,10 @@ const COLUMNS: { key: string; label: string }[] = [
 export default async function LeadsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ priority?: string; status?: string; source?: string; q?: string; sort?: string; dir?: string }>;
+  searchParams: Promise<{ priority?: string; status?: string; source?: string; sector?: string; city?: string; q?: string; sort?: string; dir?: string }>;
 }) {
   const sp = await searchParams;
-  const filters: LeadFilters = { priority: sp.priority, status: sp.status, source: sp.source, q: sp.q, sort: sp.sort, dir: sp.dir };
+  const filters: LeadFilters = { priority: sp.priority, status: sp.status, source: sp.source, sector: sp.sector, city: sp.city, q: sp.q, sort: sp.sort, dir: sp.dir };
 
   let leads: Awaited<ReturnType<typeof listLeads>> = [];
   let dbError: string | null = null;
@@ -44,10 +45,16 @@ export default async function LeadsPage({
     if (sp.priority) params.set("priority", sp.priority);
     if (sp.status) params.set("status", sp.status);
     if (sp.source) params.set("source", sp.source);
+    if (sp.sector) params.set("sector", sp.sector);
+    if (sp.city) params.set("city", sp.city);
     params.set("sort", key);
     params.set("dir", dir);
     return `/app/leads?${params.toString()}`;
   }
+
+  const sectorMetaActive = sp.sector ? sectorMeta(sp.sector as SectorKey) : null;
+  const cityLabel = sp.city === "__none__" ? "Senza città" : sp.city;
+  const hasContextFilter = Boolean(sp.sector || sp.city);
 
   const ctl = "rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:border-indigo-400 focus:outline-none";
 
@@ -93,12 +100,31 @@ export default async function LeadsPage({
             <option value="website">Sito (form)</option>
           </select>
         </label>
-        {/* preserve current sort when filtering */}
+        {/* preserve sort + card-driven context (settore/città) when filtering */}
         {sp.sort && <input type="hidden" name="sort" value={sp.sort} />}
         {sp.dir && <input type="hidden" name="dir" value={sp.dir} />}
+        {sp.sector && <input type="hidden" name="sector" value={sp.sector} />}
+        {sp.city && <input type="hidden" name="city" value={sp.city} />}
         <button className="h-10 rounded-lg border border-zinc-600 bg-zinc-800 px-4 text-sm font-medium text-zinc-100 hover:bg-zinc-700">Filtra</button>
         <Link href="/app/leads" className="h-10 rounded-lg px-3 text-sm leading-10 text-zinc-400 hover:text-zinc-200">azzera</Link>
       </form>
+
+      {hasContextFilter && (
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-zinc-500">Filtri attivi:</span>
+          {sectorMetaActive && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/15 px-3 py-1 text-indigo-200 ring-1 ring-indigo-500/30">
+              {sectorMetaActive.icon} {sectorMetaActive.label}
+            </span>
+          )}
+          {sp.city && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-800 px-3 py-1 text-zinc-200 ring-1 ring-zinc-700">
+              📍 {cityLabel}
+            </span>
+          )}
+          <Link href="/app/leads" className="text-indigo-300 hover:underline">azzera</Link>
+        </div>
+      )}
 
       {dbError ? (
         <div className="mt-8 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-200">{dbError}</div>

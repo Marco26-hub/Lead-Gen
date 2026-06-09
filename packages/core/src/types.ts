@@ -116,6 +116,8 @@ export interface LeadRow {
   domain: string | null;
   business_name: string;
   category: string | null;
+  /** Città normalizzata (Title Case). Da scraping (località cercata) o backfill da address. */
+  city: string | null;
   address: string | null;
   phone_e164: string | null;
   phone_type: 'mobile' | 'fixed' | 'other' | null;

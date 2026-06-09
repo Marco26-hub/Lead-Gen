@@ -1,7 +1,7 @@
 import { ApifyClient } from 'apify-client';
 import { getServiceClient } from './supabase';
 import { requireEnv } from './config';
-import { normalizeDomain, toE164, phoneType, slugify } from './normalize';
+import { normalizeDomain, toE164, phoneType, slugify, normalizeCity } from './normalize';
 import { type RawPlace, type ReviewItem, type StageResult, emptyResult } from './types';
 import { extractInstagramHandle } from './instagram';
 
@@ -117,11 +117,16 @@ function topReviews(p: RawPlace): ReviewItem[] {
 }
 
 /** Upsert payload — omits status/page_model/demo_url so re-scrape never regresses a lead. */
-export function buildLeadPayload(p: RawPlace, fallbackCategory: string): Record<string, unknown> {
+export function buildLeadPayload(
+  p: RawPlace,
+  fallbackCategory: string,
+  fallbackCity?: string,
+): Record<string, unknown> {
   const payload: Record<string, unknown> = {
     place_id: p.placeId,
     business_name: p.title,
     category: p.categoryName ?? fallbackCategory,
+    city: normalizeCity(fallbackCity),
     address: p.address ?? null,
     rating: typeof p.totalScore === 'number' ? p.totalScore : null,
     review_count: typeof p.reviewsCount === 'number' ? p.reviewsCount : null,
@@ -144,13 +149,17 @@ export function buildLeadPayload(p: RawPlace, fallbackCategory: string): Record<
 }
 
 /** Dedupe-upsert places into `leads` (conflict on place_id; graceful domain-unique fallback). */
-export async function upsertLeads(places: RawPlace[], fallbackCategory: string): Promise<StageResult> {
+export async function upsertLeads(
+  places: RawPlace[],
+  fallbackCategory: string,
+  fallbackCity?: string,
+): Promise<StageResult> {
   const res = emptyResult('scrape');
   const sb = getServiceClient();
   for (const p of places) {
     if (!p.placeId || !p.title) continue;
     res.processed++;
-    const payload = buildLeadPayload(p, fallbackCategory);
+    const payload = buildLeadPayload(p, fallbackCategory, fallbackCity);
     const { error } = await sb.from('leads').upsert(payload, { onConflict: 'place_id' });
     if (error) {
       if (error.code === '23505' && /domain/i.test(error.message)) {

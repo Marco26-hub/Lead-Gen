@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/admin/auth";
 import { SignOutButton } from "@/components/admin/SignOutButton";
+import { AppSidebar } from "@/leadgen/components/AppSidebar";
 
 /**
- * Lead-gen dashboard shell. Lives under /app and is gated by the SAME
- * Better Auth admin session as /admin (single login for the whole gestionale).
- * The dashboard UI is built for a dark zinc theme, so we force it here rather
- * than in global CSS (the marketing site keeps its own theme system).
+ * Unified admin dashboard shell. Lives under /app, gated by Better Auth
+ * (`requireAdmin`). One sidebar for everything: Panoramica, Lead, Clienti,
+ * Appuntamenti, Scraping, Impostazioni. Dark zinc theme (forced here so the
+ * marketing site keeps its own theme system).
  */
 export const metadata = {
-  title: "Lead Gen — Social Web Automation",
+  title: "Dashboard — Social Web Automation",
   robots: { index: false, follow: false },
 };
 
-export default async function LeadgenLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -21,25 +22,26 @@ export default async function LeadgenLayout({
   const session = await requireAdmin();
 
   return (
-    <div className="min-h-dvh bg-zinc-950 text-zinc-100">
-      <header className="flex h-14 items-center gap-4 border-b border-zinc-800 px-5 md:px-8">
-        <Link href="/app" className="font-semibold tracking-tight">
-          Lead Gen
-        </Link>
-        <nav className="flex items-center gap-4 text-sm text-zinc-400">
-          <Link href="/app/leads" className="hover:text-zinc-100">Lead</Link>
-          <Link href="/app/scrape" className="hover:text-zinc-100">Scraping</Link>
-          <Link href="/app/settings" className="hover:text-zinc-100">Impostazioni</Link>
-        </nav>
-        <div className="ml-auto flex items-center gap-3 text-sm">
-          <Link href="/admin" className="text-zinc-400 hover:text-zinc-100">
-            ← Admin sito
+    <div className="flex min-h-dvh bg-zinc-950 text-zinc-100">
+      <AppSidebar />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="flex h-14 items-center gap-4 border-b border-zinc-800 px-5 md:px-8">
+          <Link href="/app" className="font-semibold tracking-tight md:hidden">
+            Social Web
           </Link>
-          <span className="hidden text-zinc-500 sm:inline">{session.user.email}</span>
-          <SignOutButton />
-        </div>
-      </header>
-      <main className="p-5 md:p-8">{children}</main>
+          {/* Mobile quick-nav (sidebar is desktop-only). */}
+          <nav className="flex items-center gap-3 text-sm text-zinc-400 md:hidden">
+            <Link href="/app/leads" className="hover:text-zinc-100">Lead</Link>
+            <Link href="/app/clients" className="hover:text-zinc-100">Clienti</Link>
+            <Link href="/app/scrape" className="hover:text-zinc-100">Scraping</Link>
+          </nav>
+          <div className="ml-auto flex items-center gap-3 text-sm">
+            <span className="hidden text-zinc-500 sm:inline">{session.user.email}</span>
+            <SignOutButton />
+          </div>
+        </header>
+        <main className="flex-1 p-5 md:p-8">{children}</main>
+      </div>
     </div>
   );
 }

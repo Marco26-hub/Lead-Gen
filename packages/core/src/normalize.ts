@@ -42,6 +42,17 @@ export function phoneType(phone?: string | null, region: CountryCode = 'IT'): Ph
   }
 }
 
+/** Normalize a città for grouping: trim, collapse spaces, Title Case. */
+export function normalizeCity(s?: string | null): string | null {
+  if (!s) return null;
+  const t = s.trim().replace(/\s+/g, ' ');
+  if (!t) return null;
+  return t
+    .split(' ')
+    .map((w) => (w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : w))
+    .join(' ');
+}
+
 /** Public demo slug: kebab business name + last 6 chars of place_id (kept unique). */
 export function slugify(name: string, placeId: string): string {
   const base =

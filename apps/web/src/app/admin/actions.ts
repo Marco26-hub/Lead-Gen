@@ -28,8 +28,8 @@ export async function createClient(formData: FormData) {
     status: (String(formData.get("status") ?? "active") as ClientStatus),
     notes: String(formData.get("notes") ?? "").trim() || null,
   });
-  revalidatePath("/admin/clients");
-  revalidatePath("/admin");
+  revalidatePath("/app/clients");
+  revalidatePath("/app");
 }
 
 export async function updateClientStatus(id: string, status: ClientStatus) {
@@ -38,13 +38,13 @@ export async function updateClientStatus(id: string, status: ClientStatus) {
     .update(clients)
     .set({ status, updatedAt: new Date() })
     .where(eq(clients.id, id));
-  revalidatePath("/admin/clients");
+  revalidatePath("/app/clients");
 }
 
 export async function deleteClient(id: string) {
   await requireAdmin();
   await db.delete(clients).where(eq(clients.id, id));
-  revalidatePath("/admin/clients");
+  revalidatePath("/app/clients");
 }
 
 /* ---------------- Appointments ---------------- */
@@ -64,8 +64,8 @@ export async function createAppointment(formData: FormData) {
     status: (String(formData.get("status") ?? "scheduled") as AppointmentStatus),
     notes: String(formData.get("notes") ?? "").trim() || null,
   });
-  revalidatePath("/admin/appointments");
-  revalidatePath("/admin");
+  revalidatePath("/app/appointments");
+  revalidatePath("/app");
 }
 
 export async function updateAppointmentStatus(
@@ -77,12 +77,12 @@ export async function updateAppointmentStatus(
     .update(appointments)
     .set({ status, updatedAt: new Date() })
     .where(eq(appointments.id, id));
-  revalidatePath("/admin/appointments");
+  revalidatePath("/app/appointments");
 }
 
 export async function deleteAppointment(id: string) {
   await requireAdmin();
   await db.delete(appointments).where(eq(appointments.id, id));
-  revalidatePath("/admin/appointments");
-  revalidatePath("/admin");
+  revalidatePath("/app/appointments");
+  revalidatePath("/app");
 }
