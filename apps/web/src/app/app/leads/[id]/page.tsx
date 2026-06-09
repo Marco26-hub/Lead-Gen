@@ -8,6 +8,7 @@ import { EnrichInstagramButton } from "@/leadgen/components/EnrichInstagramButto
 import { PhotoManager } from "@/leadgen/components/PhotoManager";
 import { LeadEditor } from "@/leadgen/components/LeadEditor";
 import { WhatsAppButton } from "@/leadgen/components/WhatsAppButton";
+import { WhatsAppConversation } from "@/leadgen/components/WhatsAppConversation";
 import { TemplateSelector } from "@/leadgen/components/TemplateSelector";
 import { TrialButton } from "@/leadgen/components/TrialButton";
 import { BillingButtons } from "@/leadgen/components/BillingButtons";
@@ -117,6 +118,12 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
       {lead.slug && (
         <Section title={`Foto (${(lead.photos ?? []).length})`} className="mt-6">
           <PhotoManager id={lead.id} photos={(lead.photos ?? []) as string[]} />
+        </Section>
+      )}
+
+      {lead.phone_type === "mobile" && (
+        <Section title="Conversazione WhatsApp" className="mt-6">
+          <WhatsAppConversation id={lead.id} />
         </Section>
       )}
 
