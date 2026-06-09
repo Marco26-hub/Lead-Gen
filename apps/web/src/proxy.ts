@@ -20,8 +20,9 @@ export function proxy(req: NextRequest) {
   //   /app    → lead-gen dashboard (Better Auth, enforced in /app layout)
   //   /d      → public demo pages sent to prospects
   //   /billing→ public Stripe return pages
+  //   /privacy→ public GDPR art.14 privacy notice (linked at first contact)
   // (All /api/* and webhook routes are already excluded by the matcher.)
-  const NO_LOCALE = ["/admin", "/app", "/d", "/billing"];
+  const NO_LOCALE = ["/admin", "/app", "/d", "/billing", "/privacy"];
   if (NO_LOCALE.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
     return NextResponse.next();
   }
