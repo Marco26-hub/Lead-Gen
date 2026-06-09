@@ -140,7 +140,7 @@ export async function POST(req: Request): Promise<Response> {
       html:
         `<p><strong>${escapeHtml(who)}</strong> (${escapeHtml(from)}) ha risposto su WhatsApp:</p>` +
         `<blockquote>${escapeHtml(preview)}</blockquote>` +
-        (lead ? `<p>Apri il lead nella dashboard per rispondere entro la finestra di 24h.</p>` : `<p>Numero non associato a un lead.</p>`),
+        (lead ? `<p><a href="${env.PUBLIC_BASE_URL}/app/leads/${lead.id}">Apri il lead nella dashboard</a> per rispondere entro la finestra di 24h.</p>` : `<p>Numero non associato a un lead.</p>`),
     }).catch((e) => console.error("[twilio-webhook] forward email failed", e));
   }
 
