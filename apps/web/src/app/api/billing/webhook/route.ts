@@ -157,11 +157,16 @@ export async function POST(req: Request): Promise<Response> {
       }
       case "customer.subscription.created":
       case "customer.subscription.updated": {
-        const sub = event.data.object as Stripe.Subscription;
-        const leadId = sub.metadata?.lead_id;
-        const packageId = sub.metadata?.package_id ?? null;
-        const billing = (sub.metadata?.billing_period as "monthly" | "annual") ?? "monthly";
+        const evtSub = event.data.object as Stripe.Subscription;
+        const leadId = evtSub.metadata?.lead_id;
+        const packageId = evtSub.metadata?.package_id ?? null;
+        const billing = (evtSub.metadata?.billing_period as "monthly" | "annual") ?? "monthly";
         if (leadId) {
+          // Ri-leggi lo stato LIVE da Stripe: gli eventi created/updated possono
+          // arrivare out-of-order su Vercel e il payload di `created` porta lo
+          // status iniziale (`incomplete`), che sovrascriverebbe un `active` già
+          // scritto e potrebbe poi far marcare per errore `churned` un lead pagante.
+          const sub = await stripe.subscriptions.retrieve(evtSub.id);
           await upsertSubscription(sb, leadId, sub, { packageId, billing });
           if (isRevenueGenerating(sub.status)) {
             await sb.from("leads").update({ status: "paying" }).eq("id", leadId);
@@ -215,9 +220,12 @@ async function upsertSubscription(
 ) {
   const item = sub.items.data[0];
   const priceId = item?.price?.id ?? null;
-  // In acacia API la subscription ha current_period_end al top-level.
-  // Cast: il typing di Stripe 17.7 lo espone su sub direttamente.
-  const periodEnd = (sub as unknown as { current_period_end?: number }).current_period_end ?? null;
+  // current_period_end: nelle API Stripe recenti è a livello di subscription ITEM,
+  // non più al top-level della subscription → leggi prima dall'item, poi fallback.
+  const periodEnd =
+    (item as unknown as { current_period_end?: number })?.current_period_end ??
+    (sub as unknown as { current_period_end?: number }).current_period_end ??
+    null;
   const customer = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
 
   // Cerca sub esistente con stesso stripe_subscription_id
