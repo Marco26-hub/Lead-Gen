@@ -338,13 +338,6 @@ export function IdraulicaPronto({ model, rating, reviewCount, photos, openingHou
             </div>
           </div>
         </footer>
-
-        {/* STICKY CALL (mobile) */}
-        {phone && (
-          <div className={cx("sticky-call")}>
-            <a className={cx("btn", "btn-urgent", "btn-lg")} href={tel}><IcPhone /> Chiama ora</a>
-          </div>
-        )}
       </div>
     </>
   );
