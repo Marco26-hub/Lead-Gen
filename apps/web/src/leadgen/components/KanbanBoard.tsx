@@ -12,7 +12,7 @@ export interface BoardLead {
   status: string;
 }
 
-const COLUMNS: { key: string; label: string }[] = [
+const COLUMNS: { key: string; label: string; other?: boolean }[] = [
   { key: "scraped", label: "Scraped" },
   { key: "classified", label: "Classificato" },
   { key: "generated", label: "Demo pronta" },
@@ -20,7 +20,10 @@ const COLUMNS: { key: string; label: string }[] = [
   { key: "contacted", label: "Contattato" },
   { key: "trialing", label: "Trial" },
   { key: "paying", label: "Pagante" },
+  { key: "__other__", label: "Altri stati", other: true },
 ];
+
+const PIPELINE = new Set(COLUMNS.filter((c) => !c.other).map((c) => c.key));
 
 const PRIO_DOT: Record<string, string> = {
   high: "bg-red-500",
@@ -43,16 +46,20 @@ export function KanbanBoard({ initial }: { initial: BoardLead[] }) {
   return (
     <div className="flex gap-3 overflow-x-auto pb-4">
       {COLUMNS.map((col) => {
-        const items = leads.filter((l) => l.status === col.key);
+        const items = col.other
+          ? leads.filter((l) => !PIPELINE.has(l.status))
+          : leads.filter((l) => l.status === col.key);
         return (
           <div
             key={col.key}
-            onDragOver={(e) => e.preventDefault()}
+            onDragOver={(e) => !col.other && e.preventDefault()}
             onDrop={() => {
-              if (dragId) move(dragId, col.key);
+              if (!col.other && dragId) move(dragId, col.key);
               setDragId(null);
             }}
-            className="flex w-64 shrink-0 flex-col rounded-xl border border-zinc-800 bg-zinc-900/30 p-2"
+            className={`flex w-64 shrink-0 flex-col rounded-xl border p-2 ${
+              col.other ? "border-zinc-800/70 bg-zinc-900/10" : "border-zinc-800 bg-zinc-900/30"
+            }`}
           >
             <div className="flex items-center justify-between px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-400">
               {col.label}
@@ -76,7 +83,12 @@ export function KanbanBoard({ initial }: { initial: BoardLead[] }) {
                     {l.priority && (
                       <span className={`h-2 w-2 rounded-full ${PRIO_DOT[l.priority] ?? "bg-zinc-600"}`} />
                     )}
-                    {l.city ?? "—"}
+                    <span className="truncate">{l.city ?? "—"}</span>
+                    {col.other && (
+                      <span className="ml-auto shrink-0 rounded bg-zinc-800 px-1.5 font-mono text-[10px] text-zinc-400">
+                        {l.status}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
