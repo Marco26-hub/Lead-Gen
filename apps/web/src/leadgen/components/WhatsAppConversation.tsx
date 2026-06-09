@@ -13,6 +13,7 @@ interface ThreadResp {
   messages: WaMessage[];
   lastInboundAt: string | null;
   windowOpen: boolean;
+  sharedWith?: string[];
 }
 
 const WINDOW_MS = 24 * 60 * 60 * 1000;
@@ -31,6 +32,7 @@ function fmtTime(iso: string): string {
 export function WhatsAppConversation({ id }: { id: string }) {
   const [messages, setMessages] = useState<WaMessage[]>([]);
   const [lastInboundAt, setLastInboundAt] = useState<string | null>(null);
+  const [sharedWith, setSharedWith] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
@@ -44,6 +46,7 @@ export function WhatsAppConversation({ id }: { id: string }) {
       const j = (await res.json()) as ThreadResp;
       setMessages(j.messages ?? []);
       setLastInboundAt(j.lastInboundAt ?? null);
+      setSharedWith(j.sharedWith ?? []);
     } catch {
       /* transient — keep last state */
     } finally {
@@ -99,6 +102,12 @@ export function WhatsAppConversation({ id }: { id: string }) {
 
   return (
     <div>
+      {sharedWith.length > 0 && (
+        <p className="mb-3 rounded-lg border border-amber-400/40 bg-amber-400/10 px-3 py-2 text-xs text-amber-200">
+          ⚠ Numero condiviso con {sharedWith.length} altro/i lead ({sharedWith.join(", ")}). Le risposte in
+          arrivo potrebbero essere associate al lead sbagliato.
+        </p>
+      )}
       <div className="mb-3 flex items-center justify-between gap-3">
         {open ? (
           <span className="text-xs text-emerald-300">● Finestra 24h aperta · ~{hoursLeft}h per rispondere libero</span>

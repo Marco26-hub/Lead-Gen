@@ -47,7 +47,23 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   }
   const messages = (data ?? []) as WaMessage[];
   const lastIn = await lastInboundAt(sb, id);
-  return Response.json({ messages, lastInboundAt: lastIn, windowOpen: windowOpen(lastIn) });
+
+  // Persistent duplicate-phone signal: if this lead's phone is shared with other leads, inbound
+  // replies match by phone and are ambiguous — surface the conflicting leads to the operator.
+  let sharedWith: string[] = [];
+  const { data: meRow } = await sb.from("leads").select("phone_e164").eq("id", id).maybeSingle();
+  const phone = (meRow as { phone_e164: string | null } | null)?.phone_e164;
+  if (phone) {
+    const { data: others } = await sb
+      .from("leads")
+      .select("business_name")
+      .eq("phone_e164", phone)
+      .neq("id", id)
+      .limit(5);
+    sharedWith = ((others ?? []) as { business_name: string }[]).map((o) => o.business_name);
+  }
+
+  return Response.json({ messages, lastInboundAt: lastIn, windowOpen: windowOpen(lastIn), sharedWith });
 }
 
 /** POST {text} → send a free-form reply (only inside the 24h window) and record it. */
