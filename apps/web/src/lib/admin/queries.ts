@@ -9,6 +9,21 @@ export async function getClients() {
   return db.select().from(clients).orderBy(desc(clients.createdAt));
 }
 
+/** A single client by id (null if not found). */
+export async function getClient(id: string) {
+  const [row] = await db.select().from(clients).where(eq(clients.id, id)).limit(1);
+  return row ?? null;
+}
+
+/** Appointments linked to a client, newest first. */
+export async function getClientAppointments(id: string) {
+  return db
+    .select()
+    .from(appointments)
+    .where(eq(appointments.clientId, id))
+    .orderBy(desc(appointments.startsAt));
+}
+
 export async function getAppointments() {
   return db
     .select({

@@ -41,6 +41,26 @@ export async function updateClientStatus(id: string, status: ClientStatus) {
   revalidatePath("/app/clients");
 }
 
+export async function updateClient(id: string, formData: FormData) {
+  await requireAdmin();
+  const name = String(formData.get("name") ?? "").trim();
+  if (!name) return;
+  await db
+    .update(clients)
+    .set({
+      name,
+      email: String(formData.get("email") ?? "").trim() || null,
+      company: String(formData.get("company") ?? "").trim() || null,
+      phone: String(formData.get("phone") ?? "").trim() || null,
+      status: String(formData.get("status") ?? "active") as ClientStatus,
+      notes: String(formData.get("notes") ?? "").trim() || null,
+      updatedAt: new Date(),
+    })
+    .where(eq(clients.id, id));
+  revalidatePath("/app/clients");
+  revalidatePath(`/app/clients/${id}`);
+}
+
 export async function deleteClient(id: string) {
   await requireAdmin();
   await db.delete(clients).where(eq(clients.id, id));

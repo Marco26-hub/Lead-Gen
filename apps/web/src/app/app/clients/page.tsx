@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getClients } from "@/lib/admin/queries";
 import { clientStatus } from "@/lib/db/schema";
 import { createClient, updateClientStatus, deleteClient } from "@/app/admin/actions";
@@ -77,11 +78,19 @@ export default async function ClientsPage() {
             <TableEmpty colSpan={7}>Nessun cliente ancora.</TableEmpty>
           ) : (
             rows.map((c) => (
-              <Tr key={c.id}>
-                <Td className="whitespace-nowrap font-medium text-ink">{c.name}</Td>
-                <Td className="text-muted">{c.email ?? "—"}</Td>
-                <Td className="text-muted">{c.company ?? "—"}</Td>
-                <Td className="whitespace-nowrap text-muted">{c.phone ?? "—"}</Td>
+              <Tr key={c.id} className="transition-colors hover:bg-white/5">
+                <Td className="whitespace-nowrap font-medium text-ink">
+                  <Link href={`/app/clients/${c.id}`} className="block hover:underline">{c.name}</Link>
+                </Td>
+                <Td className="text-muted">
+                  <Link href={`/app/clients/${c.id}`} className="block">{c.email ?? "—"}</Link>
+                </Td>
+                <Td className="text-muted">
+                  <Link href={`/app/clients/${c.id}`} className="block">{c.company ?? "—"}</Link>
+                </Td>
+                <Td className="whitespace-nowrap text-muted">
+                  <Link href={`/app/clients/${c.id}`} className="block">{c.phone ?? "—"}</Link>
+                </Td>
                 <Td>
                   <StatusSelect
                     value={c.status}
@@ -89,7 +98,9 @@ export default async function ClientsPage() {
                     action={updateClientStatus.bind(null, c.id)}
                   />
                 </Td>
-                <Td className="whitespace-nowrap text-faint">{fmtDate(c.createdAt)}</Td>
+                <Td className="whitespace-nowrap text-faint">
+                  <Link href={`/app/clients/${c.id}`} className="block">{fmtDate(c.createdAt)}</Link>
+                </Td>
                 <Td>
                   <DeleteButton
                     action={deleteClient.bind(null, c.id)}
