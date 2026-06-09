@@ -268,7 +268,7 @@ export function IdraulicaPronto({ model, rating, reviewCount, photos, openingHou
                 {model.contact.address && (
                   <div className={cx("ci")}>
                     <div className={cx("ic")}><IcPin /></div>
-                    <div><small>Zona di copertura</small><b className={cx("sub")}>{model.contact.address}</b></div>
+                    <div><small>Zona di copertura</small><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(model.contact.address)}`} target="_blank" rel="noreferrer"><b className={cx("sub")}>{model.contact.address}</b></a></div>
                   </div>
                 )}
                 <div className={cx("ci")}>
@@ -308,7 +308,7 @@ export function IdraulicaPronto({ model, rating, reviewCount, photos, openingHou
                 <h5>Contatti</h5>
                 <ul>
                   {phone && <li><a href={tel}>{phone}</a></li>}
-                  {model.contact.address && <li>{model.contact.address}</li>}
+                  {model.contact.address && <li><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(model.contact.address)}`} target="_blank" rel="noreferrer">{model.contact.address}</a></li>}
                   <li>Pronto intervento 24/7</li>
                   <li><a href="#contatti">Richiedi un preventivo</a></li>
                 </ul>
