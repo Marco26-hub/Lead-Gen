@@ -33,6 +33,10 @@ function shell(inner: string, unsubscribeUrl: string): string {
   const sender = env.SENDER_NAME || 'Mittente';
   const addr = env.SENDER_ADDRESS ? `${escapeHtml(env.SENDER_ADDRESS)} · ` : '';
   const vat = env.SENDER_VAT ? `P.IVA ${escapeHtml(env.SENDER_VAT)}` : '';
+  // Link informativa privacy (art. 14) — mostrato solo se PRIVACY_URL è configurato.
+  const privacy = env.PRIVACY_URL
+    ? `<div style="margin-top:6px"><a href="${escapeHtml(env.PRIVACY_URL)}" style="color:#71717a">Informativa privacy</a></div>`
+    : '';
   return `<!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;background:#f4f4f5;font-family:Arial,Helvetica,sans-serif;color:#18181b">
@@ -46,6 +50,7 @@ function shell(inner: string, unsubscribeUrl: string): string {
         Ricevi questa email come comunicazione commerciale B2B a un indirizzo aziendale.
         <a href="${unsubscribeUrl}" style="color:#71717a">Annulla l'iscrizione</a>.
       </div>
+      ${privacy}
     </div>
   </div>
 </body></html>`;

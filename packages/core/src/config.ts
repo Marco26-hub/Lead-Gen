@@ -50,6 +50,10 @@ export const env = {
   RESEND_WEBHOOK_SECRET: process.env.RESEND_WEBHOOK_SECRET,
   OUTREACH_TEST_RECIPIENT: process.env.OUTREACH_TEST_RECIPIENT ?? '',
   PUBLIC_BASE_URL: (process.env.PUBLIC_BASE_URL ?? 'http://localhost:3000').replace(/\/+$/, ''),
+  /** URL pubblico dell'informativa privacy (art. 14 GDPR) — linkato nel footer email e nel WA free-form al primo contatto.
+   *  Vuoto = link non mostrato (il cablaggio c'è ma resta inerte finché non pubblichi la pagina + setti l'env).
+   *  Valore consigliato una volta pubblicata la pagina: `${PUBLIC_BASE_URL}/privacy`. */
+  PRIVACY_URL: (process.env.PRIVACY_URL ?? '').replace(/\/+$/, ''),
   /** URL Calendly/Cal.com per prenotare call commerciale. Mostrato nel BuyerBanner sulle demo. */
   SALES_CALENDLY_URL: process.env.SALES_CALENDLY_URL ?? '',
   /** Numero WhatsApp sales (formato wa.me, es. "+393476859658"). Mostrato nel BuyerBanner. */

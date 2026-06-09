@@ -88,10 +88,14 @@ export function buildDemoMessage(lead: LeadRow): DemoMessage {
     lead.site_age_class === 'none'
       ? 'la vostra attività non ha ancora un sito web'
       : 'il vostro sito attuale può essere modernizzato';
+  // Link informativa privacy (art. 14) nel primo contatto — solo se PRIVACY_URL è configurato.
+  // NB: riguarda solo il body free-form; i template approvati Meta vanno aggiornati in Twilio/Meta console.
+  const privacyLine = env.PRIVACY_URL ? `\nInformativa privacy: ${env.PRIVACY_URL}` : '';
   const body =
     `Buongiorno ${lead.business_name}! Ho notato che ${gap}. ` +
     `Ho preparato un'anteprima gratuita di come potrebbe apparire un sito moderno per voi: ${lead.demo_url}\n\n` +
-    `Se vi interessa, resto a disposizione. (Per non ricevere altri messaggi, rispondete STOP)`;
+    `Se vi interessa, resto a disposizione. (Per non ricevere altri messaggi, rispondete STOP)` +
+    privacyLine;
   // OG screenshot endpoint — popolato solo se abbiamo uno slug.
   const mediaUrl = lead.slug ? `${env.PUBLIC_BASE_URL}/api/og/${lead.slug}` : undefined;
 
