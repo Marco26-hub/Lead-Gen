@@ -66,5 +66,22 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const { data } = await sb.from("leads").select("slug").eq("id", id).maybeSingle();
     if (data?.slug) revalidatePath(`/d/${data.slug as string}`);
   }
-  return Response.json({ ok: true });
+
+  // Warn (don't block) if this phone is now shared with other leads — inbound WhatsApp replies
+  // are matched by phone, so a duplicate makes it ambiguous which lead a reply belongs to.
+  let warning: string | undefined;
+  if (typeof patch.phone_e164 === "string") {
+    const { data: dups } = await sb
+      .from("leads")
+      .select("business_name")
+      .eq("phone_e164", patch.phone_e164)
+      .neq("id", id)
+      .limit(5);
+    if (dups && dups.length > 0) {
+      const names = (dups as { business_name: string }[]).map((d) => d.business_name).join(", ");
+      warning = `Attenzione: questo numero è già usato da ${dups.length} altro/i lead (${names}). Le risposte WhatsApp potrebbero finire sul lead sbagliato.`;
+    }
+  }
+
+  return Response.json({ ok: true, ...(warning ? { warning } : {}) });
 }

@@ -31,19 +31,22 @@ export function LeadEditor({
   const [pt, setPt] = useState(phoneType ?? "");
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [warn, setWarn] = useState(false);
 
   async function save() {
     setSaving(true);
     setMsg(null);
+    setWarn(false);
     try {
       const res = await fetch(`/api/leads/${id}/update`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ status: s, notes: n, email: e, phone_e164: ph, phone_type: pt }),
       });
-      const j = (await res.json().catch(() => ({}))) as { error?: string };
+      const j = (await res.json().catch(() => ({}))) as { error?: string; warning?: string };
       if (res.ok) {
-        setMsg("Salvato ✓");
+        setWarn(Boolean(j.warning));
+        setMsg(j.warning ?? "Salvato ✓");
         router.refresh();
       } else {
         setMsg(j.error ?? "Errore");
@@ -100,7 +103,7 @@ export function LeadEditor({
         >
           {saving ? "Salvo…" : "Salva"}
         </button>
-        {msg && <span className="text-sm text-emerald-400">{msg}</span>}
+        {msg && <span className={`text-sm ${warn ? "text-amber-400" : "text-emerald-400"}`}>{msg}</span>}
       </div>
     </div>
   );
