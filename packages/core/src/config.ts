@@ -66,6 +66,12 @@ export const env = {
   TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
   WHATSAPP_FROM: process.env.WHATSAPP_FROM ?? '',
   OUTREACH_TEST_WHATSAPP: process.env.OUTREACH_TEST_WHATSAPP ?? '',
+  // Content Template SID (Twilio HX…) dei template WhatsApp approvati Meta, per vertical demo-offer.
+  // Vuoto → invio free-form (consegna solo nella finestra 24h customer-initiated).
+  TWILIO_CONTENT_SID_RISTORANTE: process.env.TWILIO_CONTENT_SID_RISTORANTE ?? '',
+  TWILIO_CONTENT_SID_SALONE: process.env.TWILIO_CONTENT_SID_SALONE ?? '',
+  TWILIO_CONTENT_SID_ARTIGIANO: process.env.TWILIO_CONTENT_SID_ARTIGIANO ?? '',
+  TWILIO_CONTENT_SID_BOOKING: process.env.TWILIO_CONTENT_SID_BOOKING ?? '',
 } as const;
 
 export type Env = typeof env;

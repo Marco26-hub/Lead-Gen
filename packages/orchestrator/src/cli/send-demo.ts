@@ -14,7 +14,7 @@ async function main() {
   if (!lead.demo_url) throw new Error('Il lead non ha una demo (genera prima il sito)');
 
   const msg = buildDemoMessage(lead);
-  const r = await sendWhatsApp(to, msg.body, { mediaUrl: msg.mediaUrl });
+  const r = await sendWhatsApp(to, msg.body, { mediaUrl: msg.mediaUrl, contentSid: msg.contentSid, contentVariables: msg.contentVariables });
   console.log(JSON.stringify({ to, business: lead.business_name, demo: lead.demo_url, mediaUrl: msg.mediaUrl, ...r }, null, 2));
   if (r.error) process.exit(1);
 }

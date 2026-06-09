@@ -20,7 +20,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
   if (!to) return Response.json({ ok: false, error: "Nessun numero mobile." }, { status: 400 });
 
   const msg = buildDemoMessage(lead);
-  const r = await sendWhatsApp(to, msg.body, { mediaUrl: msg.mediaUrl });
+  const r = await sendWhatsApp(to, msg.body, { mediaUrl: msg.mediaUrl, contentSid: msg.contentSid, contentVariables: msg.contentVariables });
   if (r.error) {
     await sb.from("outreach_events").insert({ lead_id: id, channel: "whatsapp", template: "demo_offer", status: "failed", error: r.error });
     return Response.json({ ok: false, error: r.error }, { status: 500 });

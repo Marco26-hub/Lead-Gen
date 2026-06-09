@@ -37,7 +37,7 @@ export async function runOutreachWhatsApp(limit = 100): Promise<StageResult> {
       }
 
       const msg = buildDemoMessage(lead);
-      const r = await sendWhatsApp(to, msg.body, { mediaUrl: msg.mediaUrl });
+      const r = await sendWhatsApp(to, msg.body, { mediaUrl: msg.mediaUrl, contentSid: msg.contentSid, contentVariables: msg.contentVariables });
       if (r.error) {
         await recordEvent(lead.id, 'whatsapp', { template: 'demo_offer', status: 'failed', error: r.error });
         res.errors.push({ placeId: lead.place_id, msg: r.error });
