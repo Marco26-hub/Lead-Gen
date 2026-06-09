@@ -1,6 +1,7 @@
 import { resolveTheme, resolveCta } from "@maps/core";
 import styles from "../demo.module.css";
 import { BookingForm } from "../BookingForm";
+import { MobileNav } from "./MobileNav";
 import { FontLinks, initials, stars } from "./shared";
 import type { DemoProps } from "./types";
 
@@ -35,14 +36,27 @@ export function Editorial({ model, rating, reviewCount }: DemoProps) {
           <header className="sticky top-0 z-40">
             <div className={`${styles.glass} mx-auto mt-4 flex max-w-6xl items-center justify-between rounded-full px-5 py-3`}>
               <span className={`${styles.display} text-lg font-bold tracking-tight`}>{model.meta.businessName}</span>
-              <nav className="hidden items-center gap-7 text-sm font-medium sm:flex" style={{ color: "var(--muted)" }}>
+              <nav className="hidden items-center gap-7 text-sm font-medium min-[981px]:flex" style={{ color: "var(--muted)" }}>
                 <a href="#servizi" className="transition-colors hover:text-[var(--text)]">Servizi</a>
                 <a href="#storia" className="transition-colors hover:text-[var(--text)]">Chi siamo</a>
                 <a href="#contatti" className="transition-colors hover:text-[var(--text)]">Contatti</a>
               </nav>
-              <a href="#contatti" className={styles.btnPrimary} style={{ padding: "0.6rem 1.2rem" }}>
+              <a href="#contatti" className={`${styles.btnPrimary} max-[980px]:hidden`} style={{ padding: "0.6rem 1.2rem" }}>
                 {model.hero.ctaLabel}
               </a>
+              <MobileNav
+                links={[
+                  { href: "#servizi", label: "Servizi" },
+                  { href: "#storia", label: "Chi siamo" },
+                  { href: "#contatti", label: "Contatti" },
+                ]}
+                brand={model.meta.businessName}
+                tagline={model.meta.category}
+                phone={model.contact.phone}
+                ctaLabel={model.hero.ctaLabel}
+                ctaHref="#contatti"
+                accent={t.palette.accent}
+              />
             </div>
           </header>
 

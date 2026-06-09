@@ -120,8 +120,44 @@
 .foot { background: #0f0c14; color: rgba(244,238,247,.6); padding: 40px 0; text-align: center; font-size: 14px; }
 .foot b { color: var(--ink); }
 
-@media (max-width: 860px) {
+/* desktop nav links + CTA give way to the burger (MobileNav) at its breakpoint */
+@media (max-width: 980px) {
   .navlinks { display: none; }
+  .navCta { display: none; }
+  .svcGrid, .revGrid { grid-template-columns: repeat(2, 1fr); }
+  .menuCard, .about, .cGrid { grid-template-columns: 1fr; }
+  .block { padding: 72px 0; }
   .hero { min-height: 80vh; }
-  .svcGrid, .revGrid, .menuCard, .about, .cGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .svcGrid, .revGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .root { font-size: 17px; }
+  .wrap { padding: 0 18px; }
+  .nav .wrap { height: 64px; }
+  .brand { font-size: 21px; }
+  .block { padding: 56px 0; }
+
+  .hero { min-height: auto; }
+  .heroInner { padding-top: 92px; padding-bottom: 48px; }
+  .hero h1 { font-size: clamp(38px, 12vw, 56px); }
+  .hero .lead { margin-top: 14px; font-size: 17px; }
+  .heroCta { gap: 10px; margin-top: 22px; }
+  .heroCta .btn { width: 100%; justify-content: center; }
+  .ratingPill { width: 100%; justify-content: center; }
+
+  .head h2 { font-size: clamp(28px, 8vw, 40px); }
+  .svcGrid { margin-top: 30px; }
+  .svc { padding: 24px; }
+
+  .menuCard { gap: 26px; }
+  .gal { columns: 1; }
+
+  .about { gap: 28px; }
+  .aboutImg img { min-height: 220px; }
+  .cGrid { gap: 32px; }
+  .formCard { padding: 22px; }
 }

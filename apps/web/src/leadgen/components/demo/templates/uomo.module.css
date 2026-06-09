@@ -129,22 +129,7 @@
 .stickyCta { position: fixed; bottom: 0; left: 0; right: 0; z-index: 70; background: var(--bg); border-top: 1px solid var(--line); padding: 10px 16px; display: none; }
 .stickyCta a { width: 100%; justify-content: center; }
 
-/* ── HAMBURGER ────────────────────────────────────── */
-.hamburger { display: none; }
-.hamburgerLabel {
-  display: none; cursor: pointer; width: 44px; height: 44px;
-  position: relative; z-index: 60;
-}
-.hamburgerLabel span, .hamburgerLabel span::before, .hamburgerLabel span::after {
-  display: block; position: absolute; height: 2px; width: 22px;
-  background: var(--ink); transition: transform .2s, opacity .2s;
-}
-.hamburgerLabel span { top: 21px; left: 11px; }
-.hamburgerLabel span::before { content: ""; top: -7px; }
-.hamburgerLabel span::after { content: ""; top: 7px; }
-.hamburger:checked ~ .nav .hamburgerLabel span { background: transparent; }
-.hamburger:checked ~ .nav .hamburgerLabel span::before { transform: rotate(45deg); top: 0; }
-.hamburger:checked ~ .nav .hamburgerLabel span::after { transform: rotate(-45deg); top: 0; }
+/* Hamburger nav is provided by the shared MobileNav island (≤980px). */
 
 /* ── PREMIUM POLISH ──────────────────────────────── */
 /* Soft warm wash — sage top-right, walnut bottom-left */
@@ -180,16 +165,11 @@
 }
 
 /* ── RESPONSIVE ──────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 980px) {
+  /* desktop nav links + CTA give way to the burger (MobileNav) */
+  .navlinks { display: none; }
+  .navCta { display: none; }
   .stickyCta { display: block; }
-  .hamburgerLabel { display: flex; align-items: center; justify-content: center; }
-  .navlinks {
-    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--bg); z-index: 55; flex-direction: column;
-    align-items: center; justify-content: center; gap: 24px;
-  }
-  .hamburger:checked ~ .content .navlinks { display: flex; }
-  .navlinks a { font-size: 18px; padding: 12px 24px; }
   .hero { height: 60vh; min-height: 400px; }
   .heroContent { padding: 0 24px 40px; }
   .svcCard { grid-template-columns: 1fr; min-height: auto; }
@@ -200,13 +180,24 @@
   .colLeft { padding-right: 0; border-right: none; border-bottom: 1px solid var(--line); padding-bottom: 40px; margin-bottom: 40px; }
   .colRight { padding-left: 0; }
   .gal { grid-template-columns: repeat(2, 1fr); padding: 0 24px; }
+  .galItem:nth-child(1) { grid-column: span 2; }
+  /* keep the sticky CTA bar clear of the footer */
+  .foot { padding-bottom: 76px; }
 }
-@media (max-width: 480px) {
+@media (max-width: 560px) {
   .wrap { padding: 0 16px; }
   .block, .galSection, .aboutBlock { padding: 56px 0; }
   .btn { min-height: 44px; padding: 9px 16px; font-size: 11px; touch-action: manipulation; }
+  .hero h1 { font-size: clamp(30px, 9vw, 44px); }
   .heroContent { padding: 0 16px 32px; }
-  .gal { padding: 0 16px; }
+  .heroActions .btn { flex: 1 1 auto; justify-content: center; }
+  .svcNum { font-size: 40px; }
+  .svcBody h3 { font-size: 20px; }
+  .gal { grid-template-columns: 1fr; padding: 0 16px; }
+  .galItem:nth-child(1) { grid-column: auto; }
+  .galItem img, .galItem:nth-child(1) img { aspect-ratio: 4/3; }
+  .formCard { padding: 24px 20px; }
   .chip { min-height: 44px; }
   .hoursRow { min-height: 44px; align-items: center; }
+  .foot .wrap { flex-direction: column; gap: 6px; text-align: center; }
 }

@@ -1,5 +1,6 @@
 import s from "./barber.module.css";
 import { BookingForm } from "../BookingForm";
+import { MobileNav } from "./MobileNav";
 import { FontLinks, splitPhotos } from "./shared";
 import type { DemoProps } from "./types";
 
@@ -31,11 +32,16 @@ export function BarberShop({ model, rating, reviewCount, photos, openingHours }:
   const { pics, gallery } = splitPhotos(photos);
   const hours = openingHours ?? [];
 
+  const navLinks = [
+    { href: "#servizi", label: "Servizi" },
+    ...(gallery.length > 0 ? [{ href: "#galleria", label: "Galleria" }] : []),
+    { href: "#contatti", label: "Contatti" },
+  ];
+
   return (
     <>
       <FontLinks />
       <div className={s.root}>
-        <input type="checkbox" className={s.hamburger} id="barber-nav" aria-label="Menu" />
         <div className={s.content}>
           {/* ── HERO + PRENOTAZIONE INTEGRATA ────────────── */}
           <section className={s.hero} id="top">
@@ -59,13 +65,21 @@ export function BarberShop({ model, rating, reviewCount, photos, openingHours }:
           <header className={s.nav}>
             <div className={s.wrap}>
               <span className={s.brand}>{name}</span>
-              <label className={s.hamburgerLabel} htmlFor="barber-nav"><span /></label>
               <nav className={s.navlinks}>
                 <a href="#servizi">Servizi</a>
                 {gallery.length > 0 && <a href="#galleria">Galleria</a>}
                 <a href="#contatti">Contatti</a>
               </nav>
               <a className={s.navCta} href="#top">PRENOTA</a>
+              <MobileNav
+                links={navLinks}
+                brand={name}
+                tagline={model.meta.category}
+                phone={phone}
+                ctaLabel="PRENOTA"
+                ctaHref="#top"
+                accent="#c9a23d"
+              />
             </div>
           </header>
 

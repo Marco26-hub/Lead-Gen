@@ -1,5 +1,6 @@
 import s from "./uomo.module.css";
 import { BookingForm } from "../BookingForm";
+import { MobileNav } from "./MobileNav";
 import { FontLinks, splitPhotos } from "./shared";
 import type { DemoProps } from "./types";
 
@@ -30,23 +31,36 @@ export function UomoSalone({ model, rating, reviewCount, photos, openingHours }:
   const { pics, gallery } = splitPhotos(photos);
   const hours = openingHours ?? [];
 
+  const navLinks = [
+    { href: "#servizi", label: "Servizi" },
+    ...(pics.length > 1 ? [{ href: "#galleria", label: "Galleria" }] : []),
+    { href: "#contatti", label: "Contatti" },
+  ];
+
   return (
     <>
       <FontLinks />
       <div className={s.root}>
-        <input type="checkbox" className={s.hamburger} id="uomo-nav" aria-label="Menu" />
         <div className={s.content}>
           {/* ── NAV ──────────────────────────────────── */}
           <header className={s.nav}>
             <div className={s.wrap}>
               <span className={s.brand}>{name}</span>
-              <label className={s.hamburgerLabel} htmlFor="uomo-nav"><span /></label>
               <nav className={s.navlinks}>
                 <a href="#servizi">Servizi</a>
-                <a href="#galleria">Galleria</a>
+                {pics.length > 1 && <a href="#galleria">Galleria</a>}
                 <a href="#contatti">Contatti</a>
               </nav>
-              <a className={`${s.btn} ${s.btnPrimary}`} href="#contatti">Prenota</a>
+              <a className={`${s.btn} ${s.btnPrimary} ${s.navCta}`} href="#contatti">Prenota</a>
+              <MobileNav
+                links={navLinks}
+                brand={name}
+                tagline={model.meta.category}
+                phone={phone}
+                ctaLabel={model.hero.ctaLabel}
+                ctaHref="#contatti"
+                accent="#8b6f4e"
+              />
             </div>
           </header>
 

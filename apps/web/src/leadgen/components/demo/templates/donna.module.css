@@ -144,23 +144,6 @@
 .stickyCta { position: fixed; bottom: 0; left: 0; right: 0; z-index: 70; background: var(--bg); border-top: 1px solid var(--line); padding: 10px 16px; display: none; }
 .stickyCta a { width: 100%; justify-content: center; }
 
-/* ── HAMBURGER ────────────────────────────────────── */
-.hamburger { display: none; }
-.hamburgerLabel {
-  display: none; cursor: pointer; width: 44px; height: 44px;
-  position: relative; z-index: 60;
-}
-.hamburgerLabel span, .hamburgerLabel span::before, .hamburgerLabel span::after {
-  display: block; position: absolute; height: 2px; width: 22px;
-  background: var(--ink); transition: transform .2s, opacity .2s;
-}
-.hamburgerLabel span { top: 21px; left: 11px; }
-.hamburgerLabel span::before { content: ""; top: -7px; }
-.hamburgerLabel span::after { content: ""; top: 7px; }
-.hamburger:checked ~ .nav .hamburgerLabel span { background: transparent; }
-.hamburger:checked ~ .nav .hamburgerLabel span::before { transform: rotate(45deg); top: 0; }
-.hamburger:checked ~ .nav .hamburgerLabel span::after { transform: rotate(-45deg); top: 0; }
-
 /* ── PREMIUM POLISH ──────────────────────────────── */
 /* Warm boudoir glow — gold top-right, burgundy bottom-left */
 .root::after {
@@ -198,33 +181,39 @@
 }
 
 /* ── RESPONSIVE ──────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 980px) {
+  /* desktop nav links + nav CTA give way to the shared MobileNav burger */
+  .navlinks { display: none; }
+  .nav .wrap > .btn { display: none; }
   .stickyCta { display: block; }
-  .hamburgerLabel { display: flex; align-items: center; justify-content: center; }
-  .navlinks {
-    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--bg); z-index: 55; flex-direction: column;
-    align-items: center; justify-content: center; gap: 24px;
-  }
-  .hamburger:checked ~ .content .navlinks { display: flex; }
-  .navlinks a { font-size: 18px; padding: 12px 24px; }
-  .heroGrid { grid-template-columns: 1fr; }
+  /* hero magazine cover stacks: photo on top, copy below */
+  .heroGrid { grid-template-columns: 1fr; min-height: 0; }
   .heroImgWrap { height: 50vh; }
   .heroTextSide { padding: 40px 24px; }
+  /* spread (gallery + reviews) collapses to one column */
   .spreadGrid { grid-template-columns: 1fr; }
   .spreadLeft { padding-right: 0; border-right: none; border-bottom: 1px solid var(--line); padding-bottom: 40px; margin-bottom: 40px; }
   .spreadRight { padding-left: 0; }
+  /* booking callout collapses to one column */
   .bookingInner { grid-template-columns: 1fr; }
   .bookingText { padding-right: 0; border-right: none; border-bottom: 1px solid var(--line); padding-bottom: 40px; margin-bottom: 40px; }
   .bookingForm { padding-left: 0; }
   .teamScroll { padding-bottom: 24px; }
+  /* keep the sticky CTA bar clear of the footer */
+  .foot { padding-bottom: 88px; }
 }
 @media (max-width: 480px) {
   .wrap { padding: 0 16px; }
+  .heroImgWrap { height: 42vh; }
+  .hero .lead { max-width: none; }
   .heroTextSide { padding: 32px 16px; }
   .spread, .teamSection, .bookingCallout { padding: 56px 0; }
-  .btn { min-height: 44px; padding: 9px 16px; font-size: 11px; touch-action: manipulation; }
+  .heroActions { gap: 8px; }
+  .heroActions .btn { flex: 1 1 auto; justify-content: center; }
+  .btn { min-height: 44px; padding: 11px 16px; font-size: 11px; touch-action: manipulation; }
+  .navlinks a { min-height: 44px; }
   .chip { min-height: 44px; }
   .hoursRow { min-height: 44px; align-items: center; }
   .galItem { min-height: 120px; }
+  .gal { gap: 3px; }
 }

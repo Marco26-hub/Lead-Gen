@@ -1,6 +1,7 @@
 import { resolveCta } from "@maps/core";
 import styles from "./pesce.module.css";
 import { BookingForm } from "../BookingForm";
+import { MobileNav } from "./MobileNav";
 import { splitPhotos } from "./shared";
 import type { DemoProps } from "./types";
 
@@ -18,6 +19,13 @@ export function PesceMare({ model, rating, reviewCount, photos, openingHours }: 
   const hours = openingHours ?? [];
   const menu = model.menu;
 
+  const navLinks = [
+    { href: "#pescato", label: "Il pescato" },
+    ...(menu ? [{ href: "#menu", label: "Menù" }] : []),
+    ...(gallery.length > 0 ? [{ href: "#galleria", label: "Galleria" }] : []),
+    { href: "#contatti", label: "Contatti" },
+  ];
+
   return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,7 +42,16 @@ export function PesceMare({ model, rating, reviewCount, photos, openingHours }: 
                 {gallery.length > 0 && <a href="#galleria">Galleria</a>}
                 <a href="#contatti">Contatti</a>
               </nav>
-              <a className={`${styles.btn} ${styles.btnPrimary}`} href="#contatti">{model.hero.ctaLabel}</a>
+              <a className={`${styles.btn} ${styles.btnPrimary} ${styles.navCta}`} href="#contatti">{model.hero.ctaLabel}</a>
+              <MobileNav
+                links={navLinks}
+                brand={name}
+                tagline={model.meta.category}
+                phone={phone}
+                ctaLabel={model.hero.ctaLabel}
+                ctaHref="#contatti"
+                accent="#0e7c86"
+              />
             </div>
           </header>
 

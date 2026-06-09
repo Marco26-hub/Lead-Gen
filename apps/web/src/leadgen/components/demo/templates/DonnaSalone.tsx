@@ -1,5 +1,6 @@
 import s from "./donna.module.css";
 import { BookingForm } from "../BookingForm";
+import { MobileNav } from "./MobileNav";
 import { FontLinks, splitPhotos } from "./shared";
 import type { DemoProps } from "./types";
 
@@ -33,23 +34,36 @@ export function DonnaSalone({ model, rating, reviewCount, photos, openingHours }
   const { pics, gallery } = splitPhotos(photos);
   const hours = openingHours ?? [];
 
+  const navLinks = [
+    { href: "#servizi", label: "Servizi" },
+    { href: "#galleria", label: "Galleria" },
+    { href: "#contatti", label: "Contatti" },
+  ];
+
   return (
     <>
       <FontLinks />
       <div className={s.root}>
-        <input type="checkbox" className={s.hamburger} id="donna-nav" aria-label="Menu" />
         <div className={s.content}>
           {/* ── NAV ──────────────────────────────────── */}
           <header className={s.nav}>
             <div className={s.wrap}>
               <span className={s.brand}>{name}</span>
-              <label className={s.hamburgerLabel} htmlFor="donna-nav"><span /></label>
               <nav className={s.navlinks}>
                 <a href="#servizi">Servizi</a>
                 <a href="#galleria">Galleria</a>
                 <a href="#contatti">Contatti</a>
               </nav>
               <a className={`${s.btn} ${s.btnPrimary}`} href="#contatti">Prenota</a>
+              <MobileNav
+                links={navLinks}
+                brand={name}
+                tagline={model.meta.category}
+                phone={phone}
+                ctaLabel={model.hero.ctaLabel}
+                ctaHref="#contatti"
+                accent="#b8892a"
+              />
             </div>
           </header>
 

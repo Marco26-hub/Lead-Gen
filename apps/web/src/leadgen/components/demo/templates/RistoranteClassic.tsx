@@ -1,6 +1,7 @@
 import { resolveTheme, resolveCta } from "@maps/core";
 import styles from "./ristorante.module.css";
 import { BookingForm } from "../BookingForm";
+import { MobileNav } from "./MobileNav";
 import { FontLinks, stars, splitPhotos } from "./shared";
 import type { DemoProps } from "./types";
 
@@ -29,6 +30,13 @@ export function RistoranteClassic({ model, rating, reviewCount, photos, openingH
   const hours = openingHours ?? [];
   const menu = model.menu;
   const name = model.meta.businessName;
+  const phone = model.contact.phone;
+
+  const navLinks = [
+    ...(menu ? [{ href: "#menu", label: "Menù" }] : []),
+    ...(gallery.length > 0 ? [{ href: "#galleria", label: "Galleria" }] : []),
+    { href: "#prenota", label: "Contatti" },
+  ];
 
   return (
     <>
@@ -38,16 +46,25 @@ export function RistoranteClassic({ model, rating, reviewCount, photos, openingH
         <div className={styles.content}>
           {/* Nav */}
           <header className="sticky top-0 z-40">
-            <div className={`${styles.nav} flex items-center justify-between px-6 py-4`}>
+            <div className={`${styles.nav} flex items-center justify-between gap-4 px-6 py-4`}>
               <span className={`${styles.display} text-lg font-bold`}>{name}</span>
-              <nav className="hidden items-center gap-8 text-sm font-medium sm:flex" style={{ color: "var(--muted)" }}>
+              <nav className={`${styles.navLinks} hidden items-center gap-8 text-sm font-medium sm:flex`} style={{ color: "var(--muted)" }}>
                 {menu && <a href="#menu" className="transition-colors hover:text-[var(--text)]">Menù</a>}
                 {gallery.length > 0 && <a href="#galleria" className="transition-colors hover:text-[var(--text)]">Galleria</a>}
                 <a href="#prenota" className="transition-colors hover:text-[var(--text)]">Contatti</a>
               </nav>
-              <a href="#prenota" className={styles.btnPrimary} style={{ padding: "0.55rem 1.2rem" }}>
+              <a href="#prenota" className={`${styles.navCta} ${styles.btnPrimary}`} style={{ padding: "0.55rem 1.2rem" }}>
                 {model.hero.ctaLabel}
               </a>
+              <MobileNav
+                links={navLinks}
+                brand={name}
+                tagline={model.meta.category}
+                phone={phone}
+                ctaLabel={model.hero.ctaLabel}
+                ctaHref="#prenota"
+                accent="#e0792f"
+              />
             </div>
           </header>
 

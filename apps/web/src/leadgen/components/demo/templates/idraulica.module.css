@@ -293,33 +293,44 @@
 @media (max-width: 980px) {
   .topstrip .wrap span:nth-child(2),
   .topstrip .wrap span:nth-child(3) { display: none; }
+  /* desktop nav links + CTA give way to the burger (MobileNav) */
   .nav-links { display: none; }
-  .nav-phone { display: none; }
-  .hero .wrap { grid-template-columns: 1fr; gap: 40px; }
-  .hero-visual { order: -1; }
-  .hero-photo { height: 340px; }
-  .float-rating { left: 12px; }
-  .float-badge { right: 12px; }
-  .stats .wrap { grid-template-columns: 1fr 1fr; gap: 30px 12px; }
+  .nav-cta { display: none; }
+  .hero .wrap { grid-template-columns: 1fr; gap: 32px; }
+  /* copy first on mobile (headline + CTA above the fold), photo + trust cards
+     below. hero floats become static cards under the photo — never overlap. */
+  .hero-visual { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+  .hero-photo { grid-column: 1 / -1; height: clamp(220px, 52vw, 360px); }
+  .float-card { position: static; left: auto; right: auto; top: auto; bottom: auto; box-shadow: var(--shadow); }
+  .stats .wrap { grid-template-columns: repeat(4, 1fr); gap: 24px 12px; }
   .stat + .stat::before { display: none; }
   .svc-grid, .rev-grid { grid-template-columns: 1fr 1fr; }
   .why-grid { grid-template-columns: 1fr; gap: 36px; }
   .contact .wrap { grid-template-columns: 1fr; }
   .work-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 200px; }
   .work-grid .wide { grid-column: span 2; }
+  .work-grid .tall { grid-row: auto; }
   .sticky-call { display: block; }
+  /* keep the sticky-call FAB clear of the footer */
+  .foot { padding-bottom: 104px; }
 }
 @media (max-width: 600px) {
   .root { font-size: 17px; }
   .wrap { padding: 0 18px; }
-  .block { padding: 64px 0; }
-  .hero .wrap { padding-top: 44px; padding-bottom: 52px; }
-  .svc-grid, .rev-grid, .stats .wrap { grid-template-columns: 1fr; }
+  .block { padding: 60px 0; }
+  .hero .wrap { padding-top: 40px; padding-bottom: 48px; }
+  .hero-visual { grid-template-columns: 1fr; }
+  .svc-grid, .rev-grid { grid-template-columns: 1fr; }
+  .stats .wrap { grid-template-columns: 1fr 1fr; gap: 22px 12px; padding: 32px 18px; }
+  .stat .num { font-size: 38px; }
   .field-row, .urgency { grid-template-columns: 1fr; }
   .work-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; }
   .work-grid .wide, .work-grid .tall { grid-column: auto; grid-row: auto; }
   .foot-grid { grid-template-columns: 1fr; gap: 28px; }
+  .foot-bottom { flex-direction: column; gap: 8px; }
   .rev-score .big { font-size: 46px; }
   .topstrip .wrap { gap: 14px; font-size: 12.5px; }
   .form-card { padding: 24px; }
+  .urgent-call b { font-size: 20px; }
+  .ci b { font-size: 19px; }
 }

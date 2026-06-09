@@ -119,8 +119,39 @@
 .foot { background: #0e0a08; color: rgba(243,233,221,.6); padding: 40px 0; text-align: center; font-size: 14px; }
 .foot b { color: var(--ink); }
 
-@media (max-width: 860px) {
+/* ≤980px: burger replaces desktop nav links + CTA; grids collapse */
+@media (max-width: 980px) {
   .navlinks { display: none; }
-  .hero { min-height: 80vh; }
-  .svcGrid, .revGrid, .menuCard, .about, .cGrid { grid-template-columns: 1fr; }
+  .navCta { display: none; }
+  .nav .wrap { gap: 12px; }
+  .hero { min-height: 78vh; }
+  .heroInner { padding-bottom: 48px; padding-top: 32px; }
+  .svcGrid, .revGrid { grid-template-columns: 1fr 1fr; }
+  .menuCard, .about, .cGrid { grid-template-columns: 1fr; }
+  .menuCard { gap: 26px; }
+  .about { gap: 28px; }
+  .cGrid { gap: 32px; }
+  .block { padding: 70px 0; }
+}
+
+/* ≤600px: single-column phone layout, reduced type + spacing */
+@media (max-width: 600px) {
+  .root { font-size: 17px; }
+  .wrap { padding: 0 18px; }
+  .nav .wrap { height: 64px; }
+  .brand { font-size: 22px; }
+  .hero { min-height: 0; }
+  .heroInner { padding-top: 96px; padding-bottom: 44px; }
+  .hero h1 { font-size: clamp(40px, 12vw, 60px); }
+  .hero .lead { font-size: 16.5px; margin-top: 14px; }
+  .heroCta { gap: 10px; margin-top: 22px; }
+  .heroCta .btn { flex: 1 1 auto; justify-content: center; }
+  .block { padding: 54px 0; }
+  .head h2 { font-size: clamp(30px, 9vw, 42px); }
+  .svcGrid { margin-top: 30px; }
+  .svcGrid, .revGrid { grid-template-columns: 1fr; }
+  .svc { padding: 24px; }
+  .aboutImg img { min-height: 220px; }
+  .formCard { padding: 22px; }
+  .foot { padding: 34px 0; }
 }

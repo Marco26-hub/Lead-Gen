@@ -139,9 +139,34 @@
 .foot { background: var(--ink); color: rgba(253,246,236,.7); padding: 40px 0; text-align: center; font-size: 14px; }
 .foot b { color: #fff; }
 
-@media (max-width: 860px) {
+@media (max-width: 980px) {
+  /* desktop nav links + CTA give way to the burger (MobileNav) at the same
+     980px breakpoint the burger appears — never leave a window with both. */
   .navlinks { display: none; }
-  .svcGrid, .revGrid { grid-template-columns: 1fr; }
-  .menuCard, .about, .cGrid { grid-template-columns: 1fr; }
+  .nav .wrap > .btn { display: none; }
+  .svcGrid, .revGrid { grid-template-columns: repeat(2, 1fr); margin-top: 32px; }
+  .menuCard { grid-template-columns: 1fr; }
+  .about, .cGrid { grid-template-columns: 1fr; gap: 32px; }
   .hero { min-height: 78vh; }
+  .block { padding: 64px 0; }
+}
+
+@media (max-width: 600px) {
+  .root { font-size: 17px; }
+  .wrap { padding: 0 18px; }
+  .strip .wrap { gap: 14px 22px; padding: 12px 18px; font-size: 12.5px; }
+  .nav .wrap { height: 64px; }
+  .brand { font-size: 21px; }
+  .hero { min-height: 72vh; }
+  .hero h1 { font-size: clamp(38px, 11vw, 56px); }
+  .hero .lead { font-size: 17px; }
+  .block { padding: 48px 0; }
+  .head h2 { font-size: clamp(28px, 8vw, 40px); }
+  .svcGrid, .revGrid { grid-template-columns: 1fr; gap: 14px; }
+  .svc { padding: 24px; }
+  .menuCard { gap: 26px; margin-top: 28px; }
+  .about { gap: 24px; }
+  .aboutImg img { min-height: 220px; }
+  .cGrid { gap: 28px; }
+  .formCard { padding: 22px; }
 }

@@ -1,0 +1,212 @@
+/* Shared mobile navigation drawer for every demo template.
+   Hidden ≥981px (the template's bespoke desktop nav takes over). Below that a
+   ≥44px burger opens a dark-glass slide-in drawer. Fonts are inherited from the
+   host template's `.root`; the `--mn-accent` CSS var (passed by each template)
+   colours the CTA so the drawer feels native to each palette. */
+
+.mnav {
+  display: none;
+}
+
+/* burger trigger — inherits the template's nav ink via currentColor */
+.burger {
+  width: 46px;
+  height: 46px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+.burger:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
+.bars { display: grid; gap: 5px; width: 22px; }
+.bars span {
+  display: block;
+  height: 2.5px;
+  border-radius: 3px;
+  background: currentColor;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+/* fixed viewport-sized clip layer — contains the off-canvas panel so it never
+   adds horizontal scroll to the page (no overflow-x:hidden on .root needed). */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  pointer-events: none;
+  /* portalled to <body>, so it carries its own accent + font (no .root cascade) */
+  --mn-accent: #2563eb;
+  font-family: var(--mn-font, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+}
+
+/* backdrop */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 12, 22, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* drawer panel */
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(86vw, 360px);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px calc(22px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, #131a2a 0%, #0c121e 100%);
+  color: #f4f7fb;
+  box-shadow: -30px 0 80px -30px rgba(0, 0, 0, 0.7);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  transform: translateX(100%);
+  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.open .backdrop { opacity: 1; visibility: visible; pointer-events: auto; }
+.open .panel { transform: translateX(0); }
+
+/* drawer header */
+.panelHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.brand b {
+  display: block;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+.brand small {
+  display: block;
+  margin-top: 3px;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(244, 247, 251, 0.55);
+  font-weight: 600;
+}
+.close {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f7fb;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.close:hover { background: rgba(255, 255, 255, 0.12); }
+.close svg { width: 20px; height: 20px; }
+
+/* links */
+.links {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+.links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  padding: 8px 4px;
+  color: #f4f7fb;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  /* staggered reveal */
+  opacity: 0;
+  transform: translateX(14px);
+  transition: opacity 0.3s ease, transform 0.3s ease, color 0.15s ease;
+}
+.links a svg { color: var(--mn-accent); opacity: 0.85; flex: none; }
+.links a:hover { color: var(--mn-accent); }
+.open .links a { opacity: 1; transform: none; }
+.open .links a:nth-child(1) { transition-delay: 0.06s; }
+.open .links a:nth-child(2) { transition-delay: 0.1s; }
+.open .links a:nth-child(3) { transition-delay: 0.14s; }
+.open .links a:nth-child(4) { transition-delay: 0.18s; }
+.open .links a:nth-child(5) { transition-delay: 0.22s; }
+.open .links a:nth-child(6) { transition-delay: 0.26s; }
+
+/* footer: phone + CTA */
+.foot {
+  margin-top: auto;
+  padding-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+.phone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f4f7fb;
+  font-size: 17px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.phone svg { width: 18px; height: 18px; color: var(--mn-accent); }
+.phone:hover { border-color: var(--mn-accent); }
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 54px;
+  border-radius: 12px;
+  background: var(--mn-accent);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 14px 30px -14px var(--mn-accent);
+}
+.cta:hover { filter: brightness(1.06); }
+
+@media (max-width: 980px) {
+  .mnav {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .backdrop,
+  .links a { transition-duration: 0.01ms; }
+  .links a { transform: none; }
+}

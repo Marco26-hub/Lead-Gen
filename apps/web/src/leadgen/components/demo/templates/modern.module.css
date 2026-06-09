@@ -60,6 +60,7 @@
 .btnPrimary:hover { background: var(--brand-deep); box-shadow: 0 4px 20px rgba(124,92,224,.4); }
 .btnGhost { background: rgba(255,255,255,.04); color: var(--ink); border: 1px solid var(--line); }
 .btnGhost:hover { border-color: var(--brand); color: var(--brand); }
+.navCta { /* desktop nav CTA marker — hidden at <=980px where MobileNav takes over */ }
 
 /* ── HERO — minimal, big text ────────────────────── */
 .hero { padding: 64px 0 48px; }
@@ -194,28 +195,37 @@
 }
 
 /* ── RESPONSIVE ──────────────────────────────────── */
-@media (max-width: 768px) {
+/* Desktop nav links + CTA give way to the shared MobileNav burger at <=980px
+   (matches MobileNav's own breakpoint, so there's never a window with both). */
+@media (max-width: 980px) {
   .stickyCta { display: block; }
-  .hamburgerLabel { display: flex; align-items: center; justify-content: center; }
-  .navlinks {
-    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--bg); z-index: 55; flex-direction: column;
-    align-items: center; justify-content: center; gap: 24px;
-  }
-  .hamburger:checked ~ .content .navlinks { display: flex; }
-  .navlinks a { font-size: 18px; padding: 12px 24px; }
-  .hero h1 { font-size: clamp(28px, 8vw, 40px); }
+  .navlinks { display: none; }
+  .navCta { display: none; }
+  .hero { padding: 52px 0 40px; }
+  .hero h1 { font-size: clamp(30px, 6.5vw, 48px); }
+  .hero .lead { font-size: 15px; }
   .grid3 { grid-template-columns: 1fr; }
-  .bookingGrid { grid-template-columns: 1fr; }
+  .gridCol { padding: 28px 22px; }
+  .colHead { margin-bottom: 22px; }
+  .bookingSection { padding: 56px 0; }
+  .bookingGrid { grid-template-columns: 1fr; gap: 28px; }
+  /* keep the sticky CTA from covering the footer */
+  .foot { padding-bottom: 84px; }
 }
 @media (max-width: 480px) {
   .wrap { padding: 0 16px; }
   .hero { padding: 40px 0 32px; }
+  .hero h1 { font-size: clamp(28px, 8vw, 38px); }
   .mainGrid { padding: 0 0 48px; }
+  .gridCol { padding: 24px 18px; }
   .galSection { padding: 32px 0; }
-  .bookingSection { padding: 48px 0; }
+  .galStrip { padding: 0 16px 16px; }
+  .bookingSection { padding: 44px 0; }
+  .bookingForm { padding: 22px 18px; }
   .btn { min-height: 44px; padding: 8px 14px; font-size: 12px; touch-action: manipulation; }
-  .galItem { flex: 0 0 260px; }
+  .heroActions .btn { flex: 1 1 auto; justify-content: center; }
+  .galItem { flex: 0 0 78vw; max-width: 300px; }
+  .galItem img { height: 200px; }
   .chip { min-height: 44px; }
   .hoursRow { min-height: 44px; align-items: center; }
 }

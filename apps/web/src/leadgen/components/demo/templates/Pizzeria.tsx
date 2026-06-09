@@ -1,6 +1,7 @@
 import { resolveCta } from "@maps/core";
 import styles from "./pizzeria.module.css";
 import { BookingForm } from "../BookingForm";
+import { MobileNav } from "./MobileNav";
 import { FontLinks, splitPhotos } from "./shared";
 import type { DemoProps } from "./types";
 
@@ -16,6 +17,13 @@ export function Pizzeria({ model, rating, reviewCount, photos, openingHours }: D
   const { pics, hero: heroPhoto, gallery, aboutPhoto } = splitPhotos(photos);
   const hours = openingHours ?? [];
   const menu = model.menu;
+
+  const navLinks = [
+    { href: "#specialita", label: "Specialità" },
+    ...(menu ? [{ href: "#menu", label: "Menù" }] : []),
+    ...(gallery.length > 0 ? [{ href: "#galleria", label: "Galleria" }] : []),
+    { href: "#contatti", label: "Contatti" },
+  ];
 
   return (
     <>
@@ -42,6 +50,15 @@ export function Pizzeria({ model, rating, reviewCount, photos, openingHours }: D
                 <a href="#contatti">Contatti</a>
               </nav>
               <a className={`${styles.btn} ${styles.btnPrimary}`} href="#contatti">{model.hero.ctaLabel}</a>
+              <MobileNav
+                links={navLinks}
+                brand={name}
+                tagline={model.meta.category}
+                phone={phone}
+                ctaLabel={model.hero.ctaLabel}
+                ctaHref="#contatti"
+                accent="#c0392b"
+              />
             </div>
           </header>
 

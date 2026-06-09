@@ -132,23 +132,6 @@
 .stickyCta { position: fixed; bottom: 0; left: 0; right: 0; z-index: 70; background: var(--bg); border-top: 1px solid var(--line); padding: 10px 16px; display: none; }
 .stickyCta a { width: 100%; justify-content: center; }
 
-/* ── HAMBURGER ────────────────────────────────────── */
-.hamburger { display: none; }
-.hamburgerLabel {
-  display: none; cursor: pointer; width: 44px; height: 44px;
-  position: relative; z-index: 60;
-}
-.hamburgerLabel span, .hamburgerLabel span::before, .hamburgerLabel span::after {
-  display: block; position: absolute; height: 2px; width: 22px;
-  background: var(--ink); transition: transform .2s, opacity .2s;
-}
-.hamburgerLabel span { top: 21px; left: 11px; }
-.hamburgerLabel span::before { content: ""; top: -7px; }
-.hamburgerLabel span::after { content: ""; top: 7px; }
-.hamburger:checked ~ .nav .hamburgerLabel span { background: transparent; }
-.hamburger:checked ~ .nav .hamburgerLabel span::before { transform: rotate(45deg); top: 0; }
-.hamburger:checked ~ .nav .hamburgerLabel span::after { transform: rotate(-45deg); top: 0; }
-
 /* ── PREMIUM POLISH ──────────────────────────────── */
 .root::after {
   content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -183,27 +166,41 @@
 }
 
 /* ── RESPONSIVE ──────────────────────────────────── */
-@media (max-width: 768px) {
+/* Desktop nav links + CTA give way to the shared burger (MobileNav) at exactly
+   its 980px breakpoint — never a window where both show. */
+@media (max-width: 980px) {
+  .navlinks { display: none; }
+  .navCta { display: none; }
   .stickyCta { display: block; }
-  .hamburgerLabel { display: flex; align-items: center; justify-content: center; }
-  .navlinks {
-    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--bg); z-index: 55; flex-direction: column;
-    align-items: center; justify-content: center; gap: 24px;
-  }
-  .hamburger:checked ~ .content .navlinks { display: flex; }
-  .navlinks a { font-size: 18px; padding: 12px 24px; }
-  .modGrid { grid-template-columns: 1fr; }
+  /* keep the fixed sticky-CTA bar clear of the footer */
+  .foot { padding-bottom: 88px; }
+  .modGrid { grid-template-columns: repeat(2, 1fr); }
   .gal { grid-template-columns: repeat(2, 1fr); }
+  .gal { margin-bottom: 48px; }
   .splitRow { grid-template-columns: 1fr; }
   .splitCol:first-child { padding-right: 0; border-right: none; border-bottom: 1px solid var(--line); padding-bottom: 40px; margin-bottom: 40px; }
   .splitCol:last-child { padding-left: 0; }
 }
-@media (max-width: 480px) {
-  .wrap { padding: 0 16px; }
+@media (max-width: 600px) {
+  .wrap { padding: 0 18px; }
   .hero { padding: 48px 0 0; }
+  .hero h1 { font-size: clamp(30px, 8.5vw, 40px); }
+  .heroText { margin-bottom: 32px; }
+  .heroImgWrap { max-height: 320px; }
   .block, .altBlock, .aboutBlock { padding: 52px 0; }
-  .btn { min-height: 44px; padding: 8px 14px; font-size: 12px; touch-action: manipulation; }
+  .sectionHead { margin-bottom: 28px; }
+  .sectionHead h2 { font-size: clamp(24px, 6.5vw, 32px); }
+  .modGrid { grid-template-columns: 1fr; }
+  /* first gallery cell no longer needs to span a missing 2-up grid */
+  .gal { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .galItem:nth-child(1) { grid-column: auto; grid-row: auto; }
+  .galItem:nth-child(1) img { aspect-ratio: 1; }
+  .btn { min-height: 44px; touch-action: manipulation; }
+  .heroActions .btn { flex: 1 1 auto; justify-content: center; }
   .chip { min-height: 44px; }
   .hoursRow { min-height: 44px; align-items: center; }
+  .formCard { padding: 20px; }
+}
+@media (max-width: 380px) {
+  .wrap { padding: 0 14px; }
 }

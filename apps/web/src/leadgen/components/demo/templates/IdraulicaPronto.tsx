@@ -1,5 +1,6 @@
 import s from "./idraulica.module.css";
 import { InterventoForm } from "./InterventoForm";
+import { MobileNav } from "./MobileNav";
 import { splitPhotos } from "./shared";
 import type { DemoProps } from "./types";
 
@@ -43,6 +44,14 @@ export function IdraulicaPronto({ model, rating, reviewCount, photos, openingHou
   const hours = openingHours ?? [];
   const services = model.services;
   const reviews = model.testimonials;
+
+  const navLinks = [
+    { href: "#servizi", label: "Servizi" },
+    ...(reviews.length > 0 ? [{ href: "#recensioni", label: "Recensioni" }] : []),
+    ...(gallery.length > 0 ? [{ href: "#lavori", label: "Lavori" }] : []),
+    { href: "#perche", label: "Perché noi" },
+    { href: "#contatti", label: "Contatti" },
+  ];
 
   const stats: { num: string; u?: string; lab: string }[] = [];
   if (rating != null) stats.push({ num: rating.toFixed(1), u: "★", lab: "Valutazione media" });
@@ -89,6 +98,15 @@ export function IdraulicaPronto({ model, rating, reviewCount, photos, openingHou
               )}
               <a className={cx("btn", "btn-urgent")} href="#contatti"><IcPhone /> {model.hero.ctaLabel}</a>
             </div>
+            <MobileNav
+              links={navLinks}
+              brand={name}
+              tagline={model.meta.category}
+              phone={phone}
+              ctaLabel={model.hero.ctaLabel}
+              ctaHref="#contatti"
+              accent="#e8612c"
+            />
           </div>
         </header>
         <a id="top" />
