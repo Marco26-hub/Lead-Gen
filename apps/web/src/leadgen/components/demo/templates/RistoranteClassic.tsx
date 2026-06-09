@@ -192,7 +192,7 @@ export function RistoranteClassic({ model, rating, reviewCount, photos, openingH
                   {model.contact.note && <p className="mt-3 max-w-sm text-base opacity-90">{model.contact.note}</p>}
                   <div className="mt-6 flex flex-wrap gap-3">
                     {model.contact.phone && <a href={`tel:${model.contact.phone}`} className={styles.chip}>☎ {model.contact.phone}</a>}
-                    {model.contact.address && <span className={styles.chip}>📍 {model.contact.address}</span>}
+                    {model.contact.address && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(model.contact.address)}`} target="_blank" rel="noreferrer" className={styles.chip}>📍 {model.contact.address}</a>}
                   </div>
                   {model.contact.address && (
                     <div className="mt-8">

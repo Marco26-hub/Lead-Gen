@@ -134,7 +134,7 @@ export function DonnaSalone({ model, rating, reviewCount, photos, openingHours }
                   {model.contact.note && <p>{model.contact.note}</p>}
                   <div className={s.contactChips}>
                     {phone && <a href={tel} className={s.chip}>{phone}</a>}
-                    {model.contact.address && <span className={s.chip}>{model.contact.address}</span>}
+                    {model.contact.address && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(model.contact.address)}`} target="_blank" rel="noreferrer" className={s.chip}>{model.contact.address}</a>}
                   </div>
                   {hours.length > 0 && (
                     <div className={s.hoursBlock}>

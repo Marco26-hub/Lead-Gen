@@ -134,7 +134,7 @@ export function ModernSalone({ model, rating, reviewCount, photos, openingHours 
                   {model.contact.note && <p style={{ color: "var(--soft)", marginBottom: 20, fontSize: 14 }}>{model.contact.note}</p>}
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
                     {phone && <a href={tel} className={s.chip}>{phone}</a>}
-                    {model.contact.address && <span className={s.chip}>{model.contact.address}</span>}
+                    {model.contact.address && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(model.contact.address)}`} target="_blank" rel="noreferrer" className={s.chip}>{model.contact.address}</a>}
                   </div>
                   {hours.length > 0 && (
                     <div style={{ marginBottom: 20 }}>

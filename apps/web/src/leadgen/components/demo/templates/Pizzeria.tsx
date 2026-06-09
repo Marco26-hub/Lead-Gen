@@ -194,7 +194,7 @@ export function Pizzeria({ model, rating, reviewCount, photos, openingHours }: D
                 {model.contact.note && <p style={{ marginTop: 14, color: "var(--soft)" }}>{model.contact.note}</p>}
                 <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", gap: 10 }}>
                   {phone && <a href={tel} className={styles.chip}>☎ {phone}</a>}
-                  {model.contact.address && <span className={styles.chip}>📍 {model.contact.address}</span>}
+                  {model.contact.address && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(model.contact.address)}`} target="_blank" rel="noreferrer" className={styles.chip}>📍 {model.contact.address}</a>}
                 </div>
                 {hours.length > 0 && (
                   <div style={{ marginTop: 22, maxWidth: 380 }}>
