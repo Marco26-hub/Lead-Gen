@@ -49,7 +49,7 @@ export function normalizeCity(s?: string | null): string | null {
   if (!t) return null;
   return t
     .split(' ')
-    .map((w) => (w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : w))
+    .map((w) => (w ? w[0]!.toUpperCase() + w.slice(1).toLowerCase() : w))
     .join(' ');
 }
 
